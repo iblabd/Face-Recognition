@@ -1,10 +1,12 @@
 import face_recognition
 import cv2
 import numpy as np
+import os
 
 video_capture = cv2.VideoCapture(0)
 
-SISWAs = ["Fairuz","Iqbal","Raditya"]
+SISWAs = os.listdir("images/")[1:]
+SISWAs = [string.split(".")[0] for string in SISWAs]
 images = {}
 image_face_encoding = {}
 
