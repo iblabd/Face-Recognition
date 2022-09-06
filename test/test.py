@@ -2,34 +2,50 @@ import face_recognition
 import cv2
 import numpy as np
 import os
+import json
 
 video_capture = cv2.VideoCapture(0)
+address = "http://192.168.1.4:8080/video"
+video_capture.open(address)
 
-SISWAs = os.listdir("images/")
-SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
-images = {}
-image_face_encoding = {}
+print("Camera is opened : ", video_capture.isOpened())
 
-for nama_siswa in SISWAs:
-    images[nama_siswa] = face_recognition.load_image_file(f"images/{nama_siswa}.jpg")
-    image_face_encoding[nama_siswa] = face_recognition.face_encodings(images[nama_siswa])[0]
+# SISWAs = os.listdir("images/")
+# SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
+# images = {}
+# image_face_encoding = {}
 
-# known_face_encodings = [
-#     iqbal_face_encoding
-# ]
+# print("initializing image_face_encoding . . .")
 
+# for nama_siswa in SISWAs:
+#     images[nama_siswa] = face_recognition.load_image_file(f"../images/{nama_siswa}.jpg")
+#     print(f"{nama_siswa} loaded")
+    
+#     print(f"encoding ... {nama_siswa}")
+#     image_face_encoding[nama_siswa] = face_recognition.face_encodings(images[nama_siswa])[0]
+#     print(f"face_encoding on {nama_siswa}, completed")
+
+with open("yamori.json") as JSON:
+    image_face_encoding = json.load(JSON)
+
+print("processing image_face_encoding, completed")
+print("appending to known_face_encodings . . . ")
 known_face_encodings = []
 
 for key, value in image_face_encoding.items():
-    known_face_encodings.append(value)
+    known_face_encodings.append(np.array(value))
 
-known_face_names = SISWAs
+SISWAs = os.listdir("images/")
+known_face_names = SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
+
+print("appending to known_face_encodings completed")
 
 face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
 
+print("executing While Loop . . .")
 while True:
     ret, frame = video_capture.read()
 
@@ -53,6 +69,8 @@ while True:
 
             face_names.append(name)
 
+    if len(face_names) != 0:
+        print(f"Detected face: {face_names}")
     process_this_frame = not process_this_frame
 
 
