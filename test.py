@@ -5,7 +5,7 @@ import os
 
 video_capture = cv2.VideoCapture(0)
 
-SISWAs = os.listdir("images/")[1:]
+SISWAs = os.listdir("images/")
 SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
 images = {}
 image_face_encoding = {}
