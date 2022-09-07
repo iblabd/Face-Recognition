@@ -9,5 +9,6 @@ class Outer:
         def main(self):
             outer = Outer().outer_method()
 
-Outer().Inner().main()
-        
+from termcolor import colored
+
+print(colored('hello', 'magenta'), colored('world', 'blue'))

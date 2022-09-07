@@ -1,27 +1,11 @@
 import json
 import os
 import face_recognition
+from termcolor import colored
 
 class Face:
     def __init__(self):
         pass
-    
-    def sync(self):
-        IMAGEs = os.listdir("images/")
-        SISWAs = [os.path.splitext(string)[0] for string in IMAGEs]
-        
-        with open("yamori.json") as JSON:
-            JSON = json.load("yamori.json")
-        
-        differentiation = 0
-        for name in SISWAs:
-            if name not in JSON.keys():
-                differentiation += 1
-        
-        if differentiation > 0:
-            self.JSON.clear()
-            self.JSON().write(faces.encode(path="images/"))
-            
         
     def __encoding__(self, image):
         return face_recognition.face_encodings(image)[0].tolist()
@@ -39,28 +23,29 @@ class Face:
         images = {}
         image_face_encoding = {}
 
-        print("initializing image_face_encoding . . .")        
+        print(colored("INITIALIZING ", "cyan"), "image_face_encoding ...")        
         
         for nama_siswa in SISWAs:
             images[nama_siswa] = face_recognition.load_image_file(f"images/{nama_siswa}.jpg")
             print(f"{nama_siswa} loaded")
             
-            print(f"encoding ... {nama_siswa} . . . this may take a while")
+            print(colored("ENCODING ", "blue"), f"{nama_siswa} ...")
 
             if JSON != 0: # JSON NOT empty
                 exist = nama_siswa in JSON.keys()
                 
                 if exist:
-                    kirchoff = json.load(JSON)[nama_siswa]
-                    print(f"{nama_siswa} passed due to already exist.")
+                    kirchoff = self.JSON().load()[nama_siswa]
+                    print(colored("PASSED ( already exist )", "green"))
                 else:
                     kirchoff = self.__encoding__(images[nama_siswa])
-                    print(f"face encoding on {nama_siswa}, completed")
+                    print(colored("SUCCESSFULLY ENCODED", "green"))
             else:
                 kirchoff = self.__encoding__(images[nama_siswa])
-                print(f"face encoding on {nama_siswa}, completed")
+                print(colored("SUCCESSFULLY ENCODED", "green"))
 
-        image_face_encoding[nama_siswa] = kirchoff
+            image_face_encoding[nama_siswa] = kirchoff
+        
         return image_face_encoding
     
     class JSON:
@@ -99,13 +84,12 @@ class Face:
             yamoriJSON = json.dumps(image_face_encoding)
             jsonFile = open("./yamori.json", "w")
             jsonFile.write(yamoriJSON)
-            
-            print("JSON writed")
             jsonFile.close()
+            print("YAMORI.JSON", colored("changes has been written", "green"))
             
         def clear(self):
             jsonFile = open("./yamori.json", "w").truncate(0)
-            print("yamori.JSON successfully cleared")
+            print("YAMORI.JSON ", colored("clearly truncated", "red"))
             
         def checkUpdates(self):
             JSON = self.load().keys()
@@ -131,41 +115,40 @@ class Face:
             else:
                 JSON = self.load()
                 intersection = self.__intersection__()
+                count = len(intersection)
                 
                 message = "-"
                 
                 if self.checkUpdates() == -1:
                     for each in intersection:
                         JSON.pop(each)
-                    message = "Some elements were successfully deleted"
+                    message = f"JSON updated. {count} element(s) were successfully deleted."
                 elif self.checkUpdates() == 1:
                     for each in intersection:
-                        JSON[each] = Face().encode(spesific=[each])[each]
-                    message = "Inserted new elements to JSON"
+                        JSON[each] = Face().encode(spesific=[each])[each]   
+                    message = f"JSON Updated. Inserted {count} element(s)."
                 
                 self.clear()
                 JSON = dict( sorted(JSON.items(), key=lambda x: x[0].lower()) )
                 self.write(JSON)
                 
-                print(message)
+                print(colored("MESSAGE:", "cyan"), message)
         
             
 def main():
     faces = Face()
-
+    
     while True:
-        options = input(">>> What? [ encode , update, clear ]  ")
+        options = input(colored(">>> ", "cyan"))
         if options == "encode":
             face_encode = faces.encode(path="images/")
             faces.JSON().write(face_encode)
-        elif options == "update":
+        if options == "update":
             faces.JSON().update()
-            # print(faces.JSON().__intersection__())
-            # for each in faces.JSON().__intersection__():
-            #     print(type(each))
-        elif options == "clear":
+        elif options == "clear" or options == "truncate":
             faces.JSON().clear()
         elif options == "q":
+            print("Exitting...")
             break
 
 main()
