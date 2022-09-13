@@ -10,21 +10,6 @@ video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
 
-# SISWAs = os.listdir("images/")
-# SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
-# images = {}
-# image_face_encoding = {}
-
-# print("initializing image_face_encoding . . .")
-
-# for nama_siswa in SISWAs:
-#     images[nama_siswa] = face_recognition.load_image_file(f"../images/{nama_siswa}.jpg")
-#     print(f"{nama_siswa} loaded")
-    
-#     print(f"encoding ... {nama_siswa}")
-#     image_face_encoding[nama_siswa] = face_recognition.face_encodings(images[nama_siswa])[0]
-#     print(f"face_encoding on {nama_siswa}, completed")
-
 with open("yamori.json") as JSON:
     image_face_encoding = json.load(JSON)
 
