@@ -9,7 +9,7 @@ import json
 app = Flask(__name__, template_folder='../resources/views')
 
 video_capture = cv2.VideoCapture(0)
-address = "http://10.141.237.223:8080/video"
+address = "http://10.24.134.120:8080/video"
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
@@ -78,7 +78,7 @@ def gen_frames():
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
                 # Draw a label with a name below the face
-                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (134, 76, 65), cv2.FILLED)
                 font = cv2.FONT_HERSHEY_DUPLEX
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
