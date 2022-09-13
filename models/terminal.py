@@ -9,7 +9,7 @@ def main():
         if options == "encode":
             face_encode = faces.encode(path="images/")
             faces.JSON().write(face_encode)
-        if options == "update":
+        elif options == "update":
             faces.JSON().update()
         elif options == "clear" or options == "truncate":
             faces.JSON().clear()

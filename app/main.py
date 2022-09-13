@@ -9,12 +9,19 @@ import json
 app = Flask(__name__, template_folder='../resources/views')
 
 video_capture = cv2.VideoCapture(0)
-address = "http://10.141.237.223:8080/video"
+
+cam = {
+    "iqbal" : "http://10.141.237.223:8080/video",
+    "fairuz": "https://192.168.1.4:8080/video",
+    "fairuz2" : "http://10.162.200.248:8080/video"
+}
+
+address = cam["fairuz2"]
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
 
-with open("../yamori.json") as JSON:
+with open("yamori.json") as JSON:
     image_face_encoding = json.load(JSON)
 
 print("processing image_face_encoding, completed")
@@ -24,7 +31,7 @@ known_face_encodings = []
 for key, value in image_face_encoding.items():
     known_face_encodings.append(np.array(value))
 
-SISWAs = os.listdir("../images/")
+SISWAs = os.listdir("images/")
 known_face_names = SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
 
 print("appending to known_face_encodings completed")
