@@ -9,7 +9,15 @@ import json
 app = Flask(__name__, template_folder='../resources/views')
 
 video_capture = cv2.VideoCapture(0)
-address = "http://10.24.134.120:8080/video"
+
+cam = {
+    "1" : "Enter ip",
+    "2": "Enter ip",
+    "3" : "Enter ip"
+}
+
+address = cam["1"]
+
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
