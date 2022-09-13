@@ -11,12 +11,12 @@ app = Flask(__name__, template_folder='../resources/views')
 video_capture = cv2.VideoCapture(0)
 
 cam = {
-    "iqbal" : "http://10.141.237.223:8080/video",
-    "fairuz": "https://192.168.1.4:8080/video",
-    "fairuz2" : "http://10.162.200.248:8080/video"
+    "1" : "Enter ip",
+    "2": "Enter ip",
+    "3" : "Enter ip"
 }
 
-address = cam["fairuz2"]
+address = cam["1"]
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
