@@ -11,7 +11,7 @@ app = Flask(__name__, template_folder='../resources/views')
 video_capture = cv2.VideoCapture(0)
 
 cam = {
-    "1" : "http://172.26.164.28:8080/video",
+    "1" : "http://10.22.242.179:8080/video",
     "2": "Enter ip",
     "3" : "Enter ip"
 }
@@ -51,7 +51,7 @@ def gen_frames():
         else:
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
-            rgb_small_frame = small_frame[:, :, ::-1]
+            rgb_small_frame = frame
 
             if process_this_frame:
                 face_locations = face_recognition.face_locations(rgb_small_frame)
