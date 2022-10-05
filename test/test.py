@@ -6,6 +6,7 @@ import json
 
 video_capture = cv2.VideoCapture(0)
 address = "http://10.128.195.91:8080/video"
+address = "http://10.160.111.149:8080/video"
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
