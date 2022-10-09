@@ -5,14 +5,8 @@ import os
 import json
 
 video_capture = cv2.VideoCapture(0)
-
-cam = {
-    "1" : "Enter ip",
-    "2": "Enter ip",
-    "3" : "Enter ip"
-}
-
-address = cam["1"]
+address = "http://10.128.195.91:8080/video"
+address = "http://10.160.111.149:8080/video"
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
@@ -75,10 +69,10 @@ while True:
         left *= 4
 
         # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (40, 167, 69), 2)
+        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
         # Draw a label with a name below the face
-        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (40, 167, 69), cv2.FILLED)
+        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
