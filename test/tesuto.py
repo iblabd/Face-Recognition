@@ -1,14 +1,14 @@
-class Outer:
-    def __init__(self):
-        pass
-    def outer_method(self):
-        print("this is outer method")
-    class Inner:
-        def __init(self):
-            pass
-        def main(self):
-            outer = Outer().outer_method()
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
-from termcolor import colored
+db = SQLAlchemy()
+app = db.create_engine("mysql://admin:131004@localhost:3306/db_presensi")
+    
 
-print(colored('hello', 'magenta'), colored('world', 'blue'))
+try:
+    app.connect()
+    print("success")
+except Exception as e:
+    print('Encountered error while generating connection string for MySQL!')
+    print(e)

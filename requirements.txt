@@ -19,7 +19,7 @@ requests
 tqdm
 urllib3
 wincertstore
-mysql-connector
-mysql-connector-python
-mysql-connector-python-rf
+mysqlclient
 termcolor
+flask_login
+flask_sqlalchemy

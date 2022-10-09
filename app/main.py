@@ -45,7 +45,7 @@ def gen_frames():
         else:
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
-            rgb_small_frame = frame
+            rgb_small_frame = small_frame[:, :, ::-1]
 
             if process_this_frame:
                 face_locations = face_recognition.face_locations(rgb_small_frame)
@@ -90,7 +90,7 @@ def gen_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@app.route('/')
+@app.route('/recog')
 def index():
     return render_template('index.html')
 @app.route('/video_feed')
