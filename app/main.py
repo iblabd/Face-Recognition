@@ -9,19 +9,18 @@ import json
 app = Flask(__name__, template_folder='../resources/views')
 
 video_capture = cv2.VideoCapture(0)
+<<<<<<< HEAD
 
-cam = {
-    "1" : "Enter ip",
-    "2": "Enter ip",
-    "3" : "Enter ip"
-}
+address = "http://10.140.199.190:8080/video"
 
-address = cam["1"]
+=======
+address = "http://10.24.134.120:8080/video"
+>>>>>>> parent of bb56d04 (prepare tensorflow)
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
 
-with open("yamori.json") as JSON:
+with open("../yamori.json") as JSON:
     image_face_encoding = json.load(JSON)
 
 print("processing image_face_encoding, completed")
@@ -31,7 +30,7 @@ known_face_encodings = []
 for key, value in image_face_encoding.items():
     known_face_encodings.append(np.array(value))
 
-SISWAs = os.listdir("images/")
+SISWAs = os.listdir("../images/")
 known_face_names = SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
 
 print("appending to known_face_encodings completed")
@@ -50,7 +49,7 @@ def gen_frames():
         else:
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
-            rgb_small_frame = small_frame[:, :, ::-1]
+            rgb_small_frame = frame
 
             if process_this_frame:
                 face_locations = face_recognition.face_locations(rgb_small_frame)
@@ -82,10 +81,10 @@ def gen_frames():
                 left *= 4
 
                 # Draw a box around the face
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+                cv2.rectangle(frame, (left, top), (right, bottom), (40, 167, 69), 2)
 
                 # Draw a label with a name below the face
-                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (40, 167, 69), cv2.FILLED)
                 font = cv2.FONT_HERSHEY_DUPLEX
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 

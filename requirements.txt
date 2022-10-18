@@ -22,3 +22,4 @@ wincertstore
 mysql-connector
 mysql-connector-python
 mysql-connector-python-rf
+termcolor

@@ -1,2 +1,14 @@
-string = "0.54895749292|0.375965837249|0.8579486394729"
-print(len(string)/3*128)
+class Outer:
+    def __init__(self):
+        pass
+    def outer_method(self):
+        print("this is outer method")
+    class Inner:
+        def __init(self):
+            pass
+        def main(self):
+            outer = Outer().outer_method()
+
+from termcolor import colored
+
+print(colored('hello', 'magenta'), colored('world', 'blue'))

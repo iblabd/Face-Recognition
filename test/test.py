@@ -5,7 +5,7 @@ import os
 import json
 
 video_capture = cv2.VideoCapture(0)
-address = "http://10.162.200.248:8080/video"
+address = "http://10.128.195.91:8080/video"
 video_capture.open(address)
 
 print("Camera is opened : ", video_capture.isOpened())
@@ -31,7 +31,6 @@ face_names = []
 process_this_frame = True
 
 print("executing While Loop . . .")
-
 while True:
     ret, frame = video_capture.read()
 
