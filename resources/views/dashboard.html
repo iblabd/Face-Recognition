@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Fixed top navbar example · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbar-fixed/">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/custom.css" crossorigin="anonymous">
+
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/c47bf836a3.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <div class="d-flex justify-align-center my-2">
+                <img src="../images/logo.png" width="64" height="64">
+                <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="d-flex justify-content-end mb-4">
+            <button type="button" name="" id="" class="btn btn-primary">Mulai Rekam</button>
+        </div>
+
+        <div class="bg-white p-5 mb-4" style="border-radius: 1.5rem;">
+            <div class="row d-flex align-items-center">
+                <div class="col-2">
+                    <img src="../images/z2.jpg" width="120px" class="rounded-circle" alt="">
+                </div>
+                <div class="col-7">
+                    <h2>Selamat pagi, John!</h2>
+                    <p class="lead">13 September 2022</p>
+                </div>
+                <div class="col-3 d-flex justify-content-end">
+                        <button type="button" name="" id="" class="btn btn-primary"><i
+                                class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white p-5" style="border-radius: 1.5rem;">
+            <div class="row mb-4">
+                <h3>Riwayat Presensi</h3>
+            </div>
+            <div class="row d-flex align-items-center mb-4">
+                <div class="mb-3 col-2">
+                    <label for="startFrom" class="form-text">Mulai dari</label>
+                    <input type="date" class="form-control" id="startFrom">
+                </div>
+                <div class="mb-3 col-2">
+                    <label for="toEnd" class="form-text">Sampai</label>
+                    <input type="date" class="form-control" id="toEnd">
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="studentSearch" class="form-text">Cari siswa</label>
+                    <input type="text" class="form-control" id="studentSearch">
+                </div>
+                <div class="col-3 d-flex">
+                    <button type="button" name="" id="" class="btn btn-primary me-2"><i class="fa fa-search"
+                            aria-hidden="true"></i> Cari</button>
+                    <button type="button" name="" id="" class="btn btn-primary"><i class="fa-solid fa-rotate-left"></i>
+                        Reset</button>
+                </div>
+            </div>
+
+            <table class="table px-4 border border-light mb-4">
+                <tr class="bg-light border-bottom border-light">
+                    <th scope="col">Nama Siswa</th>
+                    <th scope="col">Kelas</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Waktu</th>
+                    <th scope="col">Status</th>
+                </tr>
+                <tr>
+                    <td><img src="../images/z2.jpg" width="32px" class="rounded-circle" alt=""> Raditya Kanahaya</td>
+                    <td>XII RPL 1</td>
+                    <td>31/12/2022</td>
+                    <td>06:59:58</td>
+                    <td>Tepat Waktu</td>
+                </tr>
+            </table>
+
+            <div class="row d-flex justify-content-end justify-align-center px-4">
+                <div class="col-4 d-flex">
+                    <p class="col-5">Rows per page</p>
+                    <div class="form-group col-2 mx-2">
+                        <select id="inputState" class="form-control">
+                          <option selected>2</option>
+                          <option>1</option>
+                        </select>
+                    </div>
+                    <p class="col-5">1 of 1</p>
+                </div>
+
+                <div class="col-4 d-flex justify-content-between">
+                    <i class="fa-solid fa-angles-left"></i>
+                    <i class="fa-solid fa-angle-left"></i>
+                    <i class="fa-solid fa-angle-right"></i>
+                    <i class="fa-solid fa-angles-right"></i>
+                </div>
+                
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>
