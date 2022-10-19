@@ -1,0 +1,125 @@
+.body {
+    font-family: 'Poppins';
+    background-color: #1C0F29;
+    color : #5E527C;
+    margin: auto;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.q {
+    
+    margin:auto;
+}
+
+input[type=text], input[type=password] {
+  width: 368px;
+  margin: auto;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 24px;
+  gap: 10px;
+}
+
+.txt{
+    font-family: 'popping';
+}
+ 
+button {
+  background-color: #E29A04;
+  color: white;
+  padding: 14px 20px;
+  margin: auto;
+  border: none;
+  cursor: pointer;
+  width: 368px;
+  padding: 12px 20px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+.rata {
+    
+    display: inline;
+}
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 50px 0;
+  
+}
+
+.right {
+    text-align: center;
+}
+.auto {
+    align-items: center;
+    width: 368px;
+    height: auto;
+    margin: auto;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.inline {
+  display: flex;
+}
+
+
+
+span.a {
+  display: inline; /* the default for span */
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  border: 1px solid blue;  
+  background-color: yellow; 
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+.inputstyle {
+    border: 2px #1a001a;
+    border-radius: 32px;
+    background: #D9D9D9;
+    width: 220px;
+    height: 55px;
+}
+
+.containermasuk {
+width: 109px;
+height: 48px;
+background: #E29A04;
+border-radius: 24px;
+}
+
+.center {
+    text-align: center;
+}
+
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
