@@ -1,5 +1,7 @@
 from glob import glob
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, request, redirect, url_for, session, Response
+from flask_mysqldb import MySQL
+
 from dotenv import load_dotenv
 from termcolor import colored
 
@@ -8,8 +10,11 @@ import face_recognition
 import numpy as np
 import os
 import json
+import MySQLdb.cursors
+import re
 
 app = Flask(__name__, template_folder='../resources/views')
+app.secret_key = 'JFIREOJGOTJFIODJBOIERPOYIERP'
 
 load_dotenv()
 
@@ -86,6 +91,17 @@ def gen_frames():
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            
+
+def db_config(app):
+    config = ["MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"]
+    
+    for each in config:
+        app.config[each] = os.getenv(each)
+    
+    mysql = MySQL(app)
+
+db_config(app)
 
 @app.route('/')
 def index():
@@ -93,5 +109,9 @@ def index():
 @app.route('/video_feed')
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('login.html')
+
 if __name__=='__main__':
     app.run(debug=True)
