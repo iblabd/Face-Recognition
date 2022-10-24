@@ -1,5 +1,8 @@
 from glob import glob
 from flask import Flask, render_template, Response
+from dotenv import load_dotenv
+from termcolor import colored
+
 import cv2
 import face_recognition
 import numpy as np
@@ -8,32 +11,23 @@ import json
 
 app = Flask(__name__, template_folder='../resources/views')
 
+load_dotenv()
+
 video_capture = cv2.VideoCapture(0)
-<<<<<<< HEAD
+video_capture.open(os.getenv("CAMERA_ADDRESS"))
 
-address = "http://10.140.199.190:8080/video"
+if not video_capture.isOpened():
+    print(colored("ERROR", "red", "Camera failed to open"))
 
-=======
-address = "http://10.24.134.120:8080/video"
->>>>>>> parent of bb56d04 (prepare tensorflow)
-video_capture.open(address)
-
-print("Camera is opened : ", video_capture.isOpened())
-
-with open("../yamori.json") as JSON:
+with open("yamori.json") as JSON:
     image_face_encoding = json.load(JSON)
+    known_face_encodings = []
+    
+    for key, value in image_face_encoding.items():
+        known_face_encodings.append(np.array(value))
 
-print("processing image_face_encoding, completed")
-print("appending to known_face_encodings . . . ")
-known_face_encodings = []
-
-for key, value in image_face_encoding.items():
-    known_face_encodings.append(np.array(value))
-
-SISWAs = os.listdir("../images/")
-known_face_names = SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
-
-print("appending to known_face_encodings completed")
+students = os.listdir("images/")
+known_face_names = [os.path.splitext(string)[0] for string in students if string != ".gitignore"]
 
 face_locations = []
 face_encodings = []
