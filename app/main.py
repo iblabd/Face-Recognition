@@ -1,72 +1,117 @@
 from glob import glob
 from flask import Flask, render_template, request, redirect, url_for, session, Response
 from flask_mysqldb import MySQL
+
 from dotenv import load_dotenv
 from termcolor import colored
-from datetime import date
 
-from Controllers.controller import Controller
-
-import numpy as np, cv2, face_recognition, os, json, MySQLdb.cursors
+import cv2
+import face_recognition
+import numpy as np
+import os
+import json
+import MySQLdb.cursors
+import re
 
 app = Flask(__name__, template_folder='../resources/views')
 app.secret_key = 'JFIREOJGOTJFIODJBOIERPOYIERP'
 
-controller = Controller()
+load_dotenv()
 
-config = ["MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"]
+video_capture = cv2.VideoCapture(0)
+video_capture.open(os.getenv("CAMERA_ADDRESS"))
 
-for each in config:
-    app.config[each] = os.getenv(each)
+if not video_capture.isOpened():
+    print(colored("ERROR", "red", "Camera failed to open"))
+
+with open("yamori.json") as JSON:
+    image_face_encoding = json.load(JSON)
+    known_face_encodings = []
     
-mysql = MySQL(app)
+    for key, value in image_face_encoding.items():
+        known_face_encodings.append(np.array(value))
 
-@app.route('/index')
+students = os.listdir("images/")
+known_face_names = [os.path.splitext(string)[0] for string in students if string != ".gitignore"]
+
+face_locations = []
+face_encodings = []
+face_names = []
+process_this_frame = True
+
+def gen_frames():
+    global process_this_frame  
+    while True:
+        success, frame = video_capture.read()  # read the camera frame
+        if not success:
+            break
+        else:
+            small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
+            rgb_small_frame = frame
+
+            if process_this_frame:
+                face_locations = face_recognition.face_locations(rgb_small_frame)
+                face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+                face_names = []
+                for face_encoding in face_encodings:
+                    matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                    name = "Unknown"
+
+                    face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                    best_match_index = np.argmin(face_distances)
+                    if matches[best_match_index]:
+                        name = known_face_names[best_match_index]
+
+                    face_names.append(name)
+
+            if len(face_names) != 0:
+                print(f"Detected face: {face_names}")
+            process_this_frame = not process_this_frame
+
+
+            # Display the results
+            for (top, right, bottom, left), name in zip(face_locations, face_names):
+                # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+                top *= 4
+                right *= 4
+                bottom *= 4
+                left *= 4
+
+                # Draw a box around the face
+                cv2.rectangle(frame, (left, top), (right, bottom), (40, 167, 69), 2)
+
+                # Draw a label with a name below the face
+                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (40, 167, 69), cv2.FILLED)
+                font = cv2.FONT_HERSHEY_DUPLEX
+                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            
+
+def db_config(app):
+    config = ["MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"]
+    
+    for each in config:
+        app.config[each] = os.getenv(each)
+    
+    mysql = MySQL(app)
+
+db_config(app)
+
+@app.route('/')
 def index():
-    if "loggedin" in session:
-        return render_template('index.html', id=session['id'])
-    
-    return redirect(url_for('login'))
-
+    return render_template('index.html')
 @app.route('/video_feed')
 def video_feed():
-    def find_user_by_id(id, limit=1):
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = f"SELECT * FROM siswa WHERE siswa.id={id} LIMIT 1"
-        cursor.execute(query)
-        return cursor.fetchone()
-    
-    target = find_user_by_id(session['id'])
-
-    return Response(controller.gen_frames(target=target), mimetype='multipart/x-mixed-replace; boundary=frame')
-
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-        username = request.form['username']
-        password = request.form['password']
-        
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = f"SELECT * FROM siswa WHERE (siswa.nama='{username}' OR siswa.id='{username}') AND siswa.password='{password}' LIMIT 1"
-        cursor.execute(query)
-        account = cursor.fetchone()
-        
-        if account:
-            session['loggedin'] = True
-            session['id'] = account['id']
-            print('Logged in successfully!')
-            return redirect(url_for("index"))
-        else:
-            print("Incorrect Username/Password")
     return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-   session.pop('loggedin', None)
-   session.pop('id', None)
-   session.pop('username', None)
-   
-   return redirect(url_for('login'))
 
 if __name__=='__main__':
     app.run(debug=True)
