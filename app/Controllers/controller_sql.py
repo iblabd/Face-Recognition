@@ -10,69 +10,49 @@ import cv2, os, json, numpy as np
 import face_recognition
 import mysql.connector
 
+
+
 class Controller:
     null_datetime = "0000-00-00 00:00:00"
     def __init__(self): 
-        self.app = Firebase()
+        self.mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="facerec",
+            buffered=True
+        )
+        self.mycursor = self.mydb.cursor()
     
-    def datetime(self): 
-        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    def datetime(self): return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     def insert(self, id, has_time_in=False, sql=True):
         if not has_time_in:
-            self.app.ref = self.app.reference("presence")
-            self.app.push({
-                "id": id,
-                "time_in": self.datetime(),
-                "time_out": self.null_datetime,
-                "alasan": "",
-                "status": ""
-            })
+            query = f"INSERT INTO `presensi` (`id`, `siswa_id`, `time_in`, `time_out`, `alasan`, `status`) VALUES (NULL, {id}, '{self.datetime()}', 'NULL', NULL, NULL);"
         else:
             today = self.datetime().split(" ")[0]
+            query = f"UPDATE presensi SET time_out='{self.datetime()}' WHERE siswa_id={id} AND time_in LIKE '{today}%'"
             
-            self.app.ref = self.app.reference("users")
-            student = self.app.select_from("users", condition=[
-                ["id", id]
-            ])
-            
-            self.app.ref = self.app.reference("presence")
-            record_that_has_time_in = self.app.select_from("presence", [
-                ["time_in", "like", today],
-                ["student_id", id]
-            ])[0]
-            
-            presence_id = record_that_has_time_in.get("presence_id")
-            
-            self.app.update(presence_id, {
-                "time_out": self.datetime()
-            })
-            
+        self.mycursor.execute(query)
+        self.mydb.commit()
+        
     def has_time_in(self, target):
         today = self.datetime().split(" ")[0]
+        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target} AND presensi.time_in LIKE '{today}%' AND presensi.time_out = '{self.null_datetime}'"
         
-        self.app.ref = self.app.reference("presensi")
-        snap = self.app.select_from("presence", condition=[
-            ["student_id", target],
-            ["time_in", "LIKE", today],
-            ["time_out", self.null_datetime]    
-        ])
+        self.mycursor.execute(query)
+        self.mydb.commit()
         
-        return len(snap) > 0
+        return not self.mycursor.fetchall() == []
         
     def has_time_out(self, target):
+        today = self.datetime().split(" ")[0]
         query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target} AND presensi.time_in LIKE '{today}%' AND NOT presensi.time_out = '{self.null_datetime}'"
         
-        today = self.datetime().split(" ")[0]
+        self.mycursor.execute(query)
+        self.mydb.commit()
         
-        self.app.ref = self.app.reference("presensi")
-        snap = self.app.select_from("presence", condition=[
-            ["student_id", target],
-            ["time_in", "LIKE", today],
-            ["time_out", self.null_datetime]    
-        ])
-        
-        return len(snap) > 0
+        return not self.mycursor.fetchall() == []
         
     def gen_frames(self, target=None):
         
