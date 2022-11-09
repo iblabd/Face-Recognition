@@ -14,37 +14,41 @@ class Face:
         JSON = self.JSON().load()
         
         if path != 0 :
-            SISWAs = os.listdir(path)
-            SISWAs = [os.path.splitext(string)[0] for string in SISWAs]
+            students = os.listdir(path)
+            
+            if(".gitignore" in students):
+                students.remove(".gitignore")
+                
+            students = [os.path.splitext(string)[0] for string in students]
 
         if spesific != 0:
-            SISWAs = spesific
+            students = spesific
             
         images = {}
         image_face_encoding = {}
 
         print(colored("INITIALIZING ", "cyan"), "image_face_encoding ...")        
         
-        for nama_siswa in SISWAs:
-            images[nama_siswa] = face_recognition.load_image_file(f"images/{nama_siswa}.jpg")
-            print(f"{nama_siswa} loaded")
+        for student_name in students:
+            images[student_name] = face_recognition.load_image_file(f"images/{student_name}.jpg")
+            print(f"{student_name} loaded")
             
-            print(colored("ENCODING ", "blue"), f"{nama_siswa} ...")
+            print(colored("ENCODING ", "blue"), f"{student_name} ...")
 
             if JSON != 0: # JSON NOT empty
-                exist = nama_siswa in JSON.keys()
+                exist = student_name in JSON.keys()
                 
                 if exist:
-                    kirchoff = self.JSON().load()[nama_siswa]
+                    kirchoff = self.JSON().load()[student_name]
                     print(colored("PASSED ( already exist )", "green"))
                 else:
-                    kirchoff = self.__encoding__(images[nama_siswa])
+                    kirchoff = self.__encoding__(images[student_name])
                     print(colored("SUCCESSFULLY ENCODED", "green"))
             else:
-                kirchoff = self.__encoding__(images[nama_siswa])
+                kirchoff = self.__encoding__(images[student_name])
                 print(colored("SUCCESSFULLY ENCODED", "green"))
 
-            image_face_encoding[nama_siswa] = kirchoff
+            image_face_encoding[student_name] = kirchoff
         
         return image_face_encoding
     
@@ -133,5 +137,3 @@ class Face:
                 self.write(JSON)
                 
                 print(colored("MESSAGE:", "cyan"), message)
-        
-            
