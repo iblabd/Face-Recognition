@@ -18,7 +18,7 @@ config = ["MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"]
 
 for each in config:
     app.config[each] = os.getenv(each)
-    
+
 mysql = MySQL(app)
 
 @app.route('/index')
@@ -52,8 +52,7 @@ def login():
         account = cursor.fetchone()
         
         if account:
-            session['loggedin'] = True
-            session['id'] = account['id']
+            session['loggedin'], session['id'] = True, account['id']
             print('Logged in successfully!')
             return redirect(url_for("index"))
         else:

@@ -10,7 +10,7 @@ import json
 load_dotenv()
 
 video_capture = cv2.VideoCapture(0)
-video_capture.open(os.getenv("CAMERA_ADDRESS"))
+video_capture.open(1)
 
 if not video_capture.isOpened():
     print(colored("ERROR", "red", "Camera failed to open"))
@@ -84,4 +84,5 @@ while True:
         
 # Release handle to the webcam
 video_capture.release()
+cv2.waitKey(1000)
 cv2.destroyAllWindows()

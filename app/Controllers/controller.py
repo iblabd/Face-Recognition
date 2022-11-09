@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from termcolor import colored
 
 from datetime import date
+from datetime import datetime
 from flask import request
 
 import cv2, os, json, numpy as np
@@ -15,40 +16,47 @@ class Controller:
             host="localhost",
             user="root",
             password="",
-            database="facerec"
+            database="facerec",
+            buffered=True
         )
-        
-        self.today = date.today()
-        self.datetime = self.today.strftime("%Y-%m-%d %H:%M:%S")
-        
         self.mycursor = self.mydb.cursor()
     
+    def datetime(self): return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    def insert(self, id, has_time_in=False):
+        if not has_time_in:
+            query = f"INSERT INTO `presensi` (`id`, `siswa_id`, `time_in`, `time_out`, `alasan`, `status`) VALUES (NULL, {id}, '{self.datetime()}', 'NULL', NULL, NULL);"
+        else:
+            today = self.datetime().split(" ")[0]
+            query = f"UPDATE presensi SET time_out='{self.datetime()}' WHERE siswa_id={id} AND time_in LIKE '{today}%'"
+            
+        self.mycursor.execute(query)
+        self.mydb.commit()
+        
     def has_time_in(self, target):
-        today = self.datetime.split(" ")[0]
-        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target}"
-        query += f"AND presensi.time_in LIKE '{today}%'"
+        today = self.datetime().split(" ")[0]
+        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target} AND presensi.time_in LIKE '{today}%' AND presensi.time_out = '{self.null_datetime}'"
         
         self.mycursor.execute(query)
         self.mydb.commit()
         
-        return mycursor.fetchall() == []
+        return not self.mycursor.fetchall() == []
         
     def has_time_out(self, target):
-        today = self.datetime.split(" ")[0]
-        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target}"
-        query += f"AND presensi.time_in LIKE '{today}%'"
-        query += f"AND presensi.time_out = '{self.null_datetime}'"
+        today = self.datetime().split(" ")[0]
+        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target} AND presensi.time_in LIKE '{today}%' AND NOT presensi.time_out = '{self.null_datetime}'"
         
         self.mycursor.execute(query)
         self.mydb.commit()
         
-        return mycursor.fetchall() == []
+        return not self.mycursor.fetchall() == []
         
     def gen_frames(self, target=None):
+        
         load_dotenv()
 
         video_capture = cv2.VideoCapture(0)
-        video_capture.open(os.getenv("CAMERA_ADDRESS"))
+        video_capture.open(1)
 
         if not video_capture.isOpened():
             print(colored("ERROR", "red", "Camera failed to open"))
@@ -69,6 +77,7 @@ class Controller:
         process_this_frame = True
 
         while True:
+            print(self.datetime().split(" ")[0])
             success, frame = video_capture.read()  # read the camera frame
             if not success:
                 break
@@ -88,6 +97,7 @@ class Controller:
 
                         face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                         best_match_index = np.argmin(face_distances)
+                        
                         if matches[best_match_index]:
                             name = known_face_names[best_match_index]
 
@@ -99,31 +109,26 @@ class Controller:
                     if target != None:
                         if target["nama"].upper() in face_names:
                             
-                            if self.has_time_out(target["id"]):
-                                query = f"INSERT INTO `presensi` (`id`, `siswa_id`, `time_in`, `time_out`, `alasan`, `status`) VALUES (NULL, {target['id']}, '{datetime}', 'NULL', NULL, NULL);"
-                                self.mycursor.execute(query)
-                                self.mydb.commit()
+                            has_time_in, has_time_out = self.has_time_in(target["id"]), self.has_time_out(target["id"])
                             
+                            if has_time_in and has_time_out:
+                                string = colored("^ This person had already made a presence", "blue")
+                                print(string)
+                            else:
+                                if not has_time_in and not has_time_out:
+                                    status = "time_in"
+                                elif has_time_in and not has_time_out :
+                                    status = "time_out"
+                                
+                                self.insert(target["id"], has_time_in=has_time_in)
+                                
+                                name = colored(target["nama"].upper(), "green")
+                                
+                                print(f"{self.datetime} {name} done {status}")
+    
                             break
                     
                 process_this_frame = not process_this_frame
-
-
-                # # Display the results
-                # for (top, right, bottom, left), name in zip(face_locations, face_names):
-                #     # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-                #     top *= 4
-                #     right *= 4
-                #     bottom *= 4
-                #     left *= 4
-
-                #     # Draw a box around the face
-                #     cv2.rectangle(frame, (left, top), (right, bottom), (40, 167, 69), 2)
-
-                #     # Draw a label with a name below the face
-                #     cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (40, 167, 69), cv2.FILLED)
-                #     font = cv2.FONT_HERSHEY_DUPLEX
-                #     cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
