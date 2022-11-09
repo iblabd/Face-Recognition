@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Fixed top navbar example · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbar-fixed/">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/custom.css" crossorigin="anonymous">
+
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/c47bf836a3.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <div class="d-flex justify-align-center my-2">
+                <img src="../images/logo.png" width="64" height="64">
+                <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <div class="bg-white p-5" style="border-radius: 1.5rem;">
+            <div class="mb-4 d-flex justify-content-between">
+                <h3>Verifikasi!</h3>
+                <div class="col-3 d-flex justify-content-end">
+                    <button type="button" name="" id="" class="btn btn-danger"><i
+                            class="fa-solid fa-clock-rotate-left"></i>
+                        Ulangi</button>
+                </div>
+            </div>
+
+            <div class="row d-flex align-items-center">
+                <div class="col-4">
+                    <img src="../images/person.png" width="100%" style="border-radius: 1.0rem;" alt="">
+                </div>
+
+                <div class="col-7 ms-5">
+                    <div class="row mb-5">
+                        <h1>Raditya Kanahaya</h1>
+                        <h2 class="lead">2021118553 - XII RPL 1</h2>
+                    </div>
+
+                    <div class="row d-flex">
+                        <button type="button" name="" id="" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#customModal"><i class="fa-regular fa-circle-check"></i>
+                            Verifikasi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center">
+                    <div class="row">
+                        <div class="d-flex justify-content-center mb-2">
+                            <span style="color: #198754;">
+                                <i class="fa-solid fa-circle-check fa-8x"></i>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h3>Berhasil!</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
