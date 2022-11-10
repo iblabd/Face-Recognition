@@ -9,7 +9,7 @@ from Controllers.controller import Controller
 
 import numpy as np, cv2, face_recognition, os, json, MySQLdb.cursors
 
-app = Flask(__name__, template_folder='../resources/views')
+app = Flask(__name__, template_folder='../resources/views', static_folder='../resources/static')
 app.secret_key = 'JFIREOJGOTJFIODJBOIERPOYIERP'
 
 controller = Controller()
