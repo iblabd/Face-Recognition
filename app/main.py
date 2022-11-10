@@ -9,6 +9,8 @@ from Controllers.controller import Controller
 
 import numpy as np, cv2, face_recognition, os, json, MySQLdb.cursors
 
+# TODO: Rename 'username' to 'id'
+
 app = Flask(__name__, template_folder='../resources/views')
 app.secret_key = 'JFIREOJGOTJFIODJBOIERPOYIERP'
 
@@ -30,11 +32,12 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    def find_user_by_id(id, limit=1):
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = f"SELECT * FROM siswa WHERE siswa.id={id} LIMIT 1"
-        cursor.execute(query)
-        return cursor.fetchone()
+    def find_user_by_id(id):
+        snap = controller.app.select_from("users", [
+            ["id", id]
+        ])
+
+        return snap[0].get()
     
     target = find_user_by_id(session['id'])
 
@@ -46,14 +49,18 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = f"SELECT * FROM siswa WHERE (siswa.nama='{username}' OR siswa.id='{username}') AND siswa.password='{password}' LIMIT 1"
-        cursor.execute(query)
-        account = cursor.fetchone()
+        print(username, password)
+        u_int = int(username)
+        account = controller.app.select_from("users", condition=[
+            ["id", u_int],
+            ["password", password]
+        ])
         
-        if account:
-            session['loggedin'], session['id'] = True, account['id']
-            print('Logged in successfully!')
+        if len(account) > 0:
+            session['loggedin'] = True
+            session['id'] = account[0].get("id")
+            
+            print(account[0].get("name"))
             return redirect(url_for("index"))
         else:
             print("Incorrect Username/Password")

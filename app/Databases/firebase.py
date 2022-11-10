@@ -3,6 +3,7 @@ import firebase_admin
 from firebase_admin import db, credentials
 from dotenv import load_dotenv
 from termcolor import colored
+from datetime import datetime
 
 # TODO:
 # Create validation if class_id in "user" docs is exist in id in "class" docs, etc.
@@ -16,7 +17,16 @@ class Record:
         
     def get(self, field=None):
         id = list(self.value.keys())[0]
-        return self.value[id][field] if field != None else self.value[id]
+        
+        if field != None:
+            r = self.value[id][field]
+        else:
+            r = self.value[id]
+            
+        return r
+    
+    def id(self):
+        return list(self.value.keys())[0]
     
     def show(self):
         print(self.value)
@@ -41,7 +51,7 @@ class Firebase:
     
     def push(self, contents):
         self.ref.push().set(contents)
-        print(colored("query: push", "green"))
+        print(colored("query: push", "blue"))
             
     def update(self, path, contents):
         self.ref.child(path).update(contents)
@@ -69,7 +79,7 @@ class Firebase:
                     if con[2] in temp[k][con[0]]:
                         satisfied += 1
                 elif re.search("not|NOT", str_con):
-                    if con[2] not in temp[k][con[0]]:
+                    if con[2] != temp[k][con[0]]:
                         satisfied += 1
                 else:
                     if temp[k][con[0]] == con[1]:
@@ -82,24 +92,26 @@ class Firebase:
         
         return result
 
+# target=2021118576
+# today = datetime.now().strftime("%Y-%m-%d %H:%M:%S").split(" ")[0]
+# null_datetime = "0000-00-00 00:00:00"
+
 # app = Firebase()
-# app.ref = app.reference("presence")
-
-# snap = app.select_from("presence", [
-#     ["time_in", "like", "2022-11-08"],
-#     ["student_id", 2021118576]
-# ])
-
-# presence_id = snap[0].get("student_id")
-# print(presence_id)
-
-# app.ref = app.reference("presence")
 # snap = app.select_from("presence", condition=[
-#     ["student_id", 2021118576],
-#     ["time_in", "LIKE", "2022-11-08"],
-#     # ["time_out", "0000-00-00 00:00:00"]    
+#     ["student_id", target],
+#     ["time_in", "LIKE", today],
+#     ["time_out", null_datetime]
 # ])
 
-# print(snap)
-# for each in snap:
-#     print(each.get())
+# print(len(snap) > 0)
+
+# app = Firebase()
+# app.ref = app.reference("users")
+# app.push({
+#     "name": "Dhafin Qinthara Khalish",
+#     "class_id": 1,
+#     "id": 2021118888,
+#     "email": "dhafin@email.com",
+#     "password": "12345678",
+#     "telp": ""
+# })

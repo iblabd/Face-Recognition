@@ -4,11 +4,15 @@ from termcolor import colored
 from datetime import date
 from datetime import datetime
 from flask import request
-from firebase import Firebase
 
-import cv2, os, json, numpy as np
+import sys, cv2, os, json, numpy as np
 import face_recognition
 import mysql.connector
+
+from pathlib import Path
+path = str(Path(f"{os.getcwd()}\\app")).replace("\\", "/")
+sys.path.insert(0, path)
+from Databases.firebase import Firebase
 
 class Controller:
     null_datetime = "0000-00-00 00:00:00"
@@ -18,71 +22,66 @@ class Controller:
     def datetime(self): 
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    def insert(self, id, has_time_in=False, sql=True):
-        if not has_time_in:
+    def insert(self, id, has_time_in, has_time_out):
+        if has_time_in:
+            if has_time_out:
+                string = colored("^ This person had already made a presence", "blue")
+                print(string)
+            else:
+                today = self.datetime().split(" ")[0]
+            
+                self.app.ref = self.app.reference("presence")
+                presence = self.app.select_from("presence", [
+                    ["time_in", "like", today],
+                    ["student_id", id]
+                ])[0]
+                
+                self.app.update(presence.id(), {
+                    "time_out": self.datetime()
+                })
+                
+        elif not has_time_out:
             self.app.ref = self.app.reference("presence")
             self.app.push({
-                "id": id,
+                "student_id": id,
                 "time_in": self.datetime(),
                 "time_out": self.null_datetime,
-                "alasan": "",
+                "reason": "",
                 "status": ""
-            })
-        else:
-            today = self.datetime().split(" ")[0]
-            
-            self.app.ref = self.app.reference("users")
-            student = self.app.select_from("users", condition=[
-                ["id", id]
-            ])
-            
-            self.app.ref = self.app.reference("presence")
-            record_that_has_time_in = self.app.select_from("presence", [
-                ["time_in", "like", today],
-                ["student_id", id]
-            ])[0]
-            
-            presence_id = record_that_has_time_in.get("presence_id")
-            
-            self.app.update(presence_id, {
-                "time_out": self.datetime()
             })
             
     def has_time_in(self, target):
         today = self.datetime().split(" ")[0]
         
-        self.app.ref = self.app.reference("presensi")
+        self.app.ref = self.app.reference("presence")
         snap = self.app.select_from("presence", condition=[
             ["student_id", target],
             ["time_in", "LIKE", today],
-            ["time_out", self.null_datetime]    
+            ["time_out", self.null_datetime]
         ])
         
         return len(snap) > 0
         
     def has_time_out(self, target):
-        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target} AND presensi.time_in LIKE '{today}%' AND NOT presensi.time_out = '{self.null_datetime}'"
-        
         today = self.datetime().split(" ")[0]
         
         self.app.ref = self.app.reference("presensi")
         snap = self.app.select_from("presence", condition=[
             ["student_id", target],
             ["time_in", "LIKE", today],
-            ["time_out", self.null_datetime]    
+            ["time_out", "NOT", self.null_datetime]    
         ])
         
         return len(snap) > 0
         
     def gen_frames(self, target=None):
-        
         load_dotenv()
 
         video_capture = cv2.VideoCapture(0)
         video_capture.open(1)
 
         if not video_capture.isOpened():
-            print(colored("ERROR", "red", "Camera failed to open"))
+            raise EnvironmentError("Camera failed to open")
 
         with open("yamori.json") as JSON:
             image_face_encoding = json.load(JSON)
@@ -100,8 +99,7 @@ class Controller:
         process_this_frame = True
 
         while True:
-            print(self.datetime().split(" ")[0])
-            success, frame = video_capture.read()  # read the camera frame
+            success, frame = video_capture.read()
             if not success:
                 break
             else:
@@ -127,27 +125,21 @@ class Controller:
                         face_names.append(name)
 
                 if len(face_names) != 0:
-                    print(f"Detected face: {face_names}")
+                    person = self.app.select_from("users", [
+                        ["id", target["id"]]
+                    ])[0]
+                    
+                    n = person.get('name')
+                    print(f"Detected face: {face_names}, expected at least {n} in detected faces")
                     
                     if target != None:
-                        if target["nama"].upper() in face_names:
+                        if target["name"].upper() in face_names:
+                        
+                            has_time_in = self.has_time_in(target["id"])
+                            has_time_out = self.has_time_out(target["id"])
                             
-                            has_time_in, has_time_out = self.has_time_in(target["id"]), self.has_time_out(target["id"])
-                            
-                            if has_time_in and has_time_out:
-                                string = colored("^ This person had already made a presence", "blue")
-                                print(string)
-                            else:
-                                if not has_time_in and not has_time_out:
-                                    status = "time_in"
-                                elif has_time_in and not has_time_out :
-                                    status = "time_out"
-                                
-                                self.insert(target["id"], has_time_in=has_time_in)
-                                
-                                name = colored(target["nama"].upper(), "green")
-                                
-                                print(f"{self.datetime} {name} done {status}")
+                            print(has_time_in, has_time_out)
+                            self.insert(target["id"], has_time_in, has_time_out)
     
                             break
                     
