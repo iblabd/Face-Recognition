@@ -59,16 +59,16 @@ class Controller:
         video_capture.open(1)
 
         if not video_capture.isOpened():
-            print(colored("ERROR", "red", "Camera failed to open"))
+            EnvironmentError("Camera failed to open")
 
-        with open("yamori.json") as JSON:
+        with open(os.getenv("YAMORI_JSON")) as JSON:
             image_face_encoding = json.load(JSON)
             known_face_encodings = []
             
             for key, value in image_face_encoding.items():
                 known_face_encodings.append(np.array(value))
 
-        students = os.listdir("images/")
+        students = os.listdir(os.getenv("IMAGE_PATH"))
         known_face_names = [os.path.splitext(string)[0] for string in students if string != ".gitignore"]
 
         face_locations = []

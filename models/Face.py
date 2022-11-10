@@ -57,7 +57,7 @@ class Face:
             pass
         def __intersection__(self):
             JSON = self.load().keys()
-            DIR = os.listdir("images/")
+            DIR = os.listdir(os.getenv("IMAGE_PATH"))
             DIR = [os.path.splitext(string)[0] for string in DIR]
             
             changes = []
@@ -76,23 +76,23 @@ class Face:
             return changes
             
         def load(self):
-            isEmpty = os.stat("yamori.json").st_size == 0
+            isEmpty = os.stat(os.getenv("YAMORI_JSON")).st_size == 0
             
             if isEmpty:
                 return 0
             else:
-                with open("yamori.json") as JSON:
+                with open(os.getenv("YAMORI_JSON")) as JSON:
                     return json.load(JSON)
         
         def write(self, image_face_encoding):
             yamoriJSON = json.dumps(image_face_encoding)
-            jsonFile = open("./yamori.json", "w")
+            jsonFile = open(os.getenv("YAMORI_JSON"), "w")
             jsonFile.write(yamoriJSON)
             jsonFile.close()
             print("YAMORI.JSON", colored("changes has been written", "green"))
             
         def clear(self):
-            jsonFile = open("./yamori.json", "w").truncate(0)
+            jsonFile = open(os.getenv("YAMORI_JSON"), "w").truncate(0)
             print("YAMORI.JSON ", colored("clearly truncated", "red"))
             
         def checkUpdates(self):
@@ -100,7 +100,7 @@ class Face:
             JSON = list(JSON)
             JSON = len(JSON)
             
-            DIR = os.listdir("images/")
+            DIR = os.listdir(os.getenv("IMAGE_PATH"))
             DIR = [os.path.splitext(string)[0] for string in DIR]
             DIR = len(DIR)
             
