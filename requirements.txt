@@ -23,3 +23,6 @@ mysql-connector
 mysql-connector-python
 mysql-connector-python-rf
 termcolor
+dotenv
+flask_mysqldb
+python-dotenv
