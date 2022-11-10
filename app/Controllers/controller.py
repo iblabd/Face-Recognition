@@ -56,7 +56,7 @@ class Controller:
         load_dotenv()
 
         video_capture = cv2.VideoCapture(0)
-        video_capture.open(1)
+        video_capture.open(os.getenv("CAMERA_ADDRESS"))
 
         if not video_capture.isOpened():
             EnvironmentError("Camera failed to open")
