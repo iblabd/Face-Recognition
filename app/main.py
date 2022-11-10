@@ -21,6 +21,13 @@ for each in config:
 
 mysql = MySQL(app)
 
+@app.route('/')
+def dashboard():
+    if "loggedin" in session:
+        return render_template('dashboard.html', id=session['id'])
+    
+    return redirect(url_for('login'))
+
 @app.route('/index')
 def index():
     if "loggedin" in session:
