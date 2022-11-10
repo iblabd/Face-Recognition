@@ -12,11 +12,13 @@ import mysql.connector
 class Controller:
     null_datetime = "0000-00-00 00:00:00"
     def __init__(self): 
+        
+        [host, user, password, database] = [os.getenv(each) for each in ["MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"]]
         self.mydb = mysql.connector.connect(
-            host=os.getenv("MYSQL_HOST"),
-            user=os.getenv("MYSQL_USER"),
-            password=os.getenv("MYSQL_PASSWORD"),
-            database=os.getenv("MYSQL_DB"),
+            host="localhost",
+            user="root",
+            password=password,
+            database=database,
             buffered=True
         )
         self.mycursor = self.mydb.cursor()
