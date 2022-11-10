@@ -7,16 +7,11 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Fixed top navbar example · Bootstrap v5.0</title>
+    <title>Dashboard</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbar-fixed/">
-
-
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../css/bootstrap.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/custom.css" crossorigin="anonymous">
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script src="https://kit.fontawesome.com/c47bf836a3.js" crossorigin="anonymous"></script>
@@ -27,7 +22,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container">
             <div class="d-flex justify-align-center my-2">
-                <img src="../images/logo.png" width="64" height="64">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" width="64" height="64">
                 <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
@@ -39,13 +34,14 @@
 
     <main class="container">
         <div class="d-flex justify-content-end mb-4">
-            <button type="button" name="" id="" class="btn btn-primary">Mulai Rekam</button>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Mulai Rekam</a>
         </div>
 
         <div class="bg-white p-5 mb-4" style="border-radius: 1.5rem;">
             <div class="row d-flex align-items-center">
                 <div class="col-2">
-                    <img src="../images/z2.jpg" width="120px" class="rounded-circle" alt="">
+    <div class="auto">
+                    <img src="{{ url_for('static', filename='images/z2.jpg') }}" width="120px" class="rounded-circle" alt="">
                 </div>
                 <div class="col-7">
                     <h2>Selamat pagi, John!</h2>
@@ -91,7 +87,7 @@
                     <th scope="col">Status</th>
                 </tr>
                 <tr>
-                    <td><img src="../images/z2.jpg" width="32px" class="rounded-circle" alt=""> Raditya Kanahaya</td>
+                    <td><img src="{{ url_for('static', filename='images/z2.jpg') }}" width="32px" class="rounded-circle" alt=""> Raditya Kanahaya</td>
                     <td>XII RPL 1</td>
                     <td>31/12/2022</td>
                     <td>06:59:58</td>
@@ -123,7 +119,7 @@
 
     </main>
 
-    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
 
 
 </body>
