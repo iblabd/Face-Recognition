@@ -13,10 +13,10 @@ class Controller:
     null_datetime = "0000-00-00 00:00:00"
     def __init__(self): 
         self.mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="facerec",
+            host=os.getenv("MYSQL_HOST"),
+            user=os.getenv("MYSQL_USER"),
+            password=os.getenv("MYSQL_PASSWORD"),
+            database=os.getenv("MYSQL_DB"),
             buffered=True
         )
         self.mycursor = self.mydb.cursor()
