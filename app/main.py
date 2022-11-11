@@ -23,6 +23,10 @@ for each in config:
 
 mysql = MySQL(app)
 
+@app.route("/")
+def main():
+    return redirect(url_for("index"))
+
 @app.route('/index')
 def index():
     if "loggedin" in session:
