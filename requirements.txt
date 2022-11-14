@@ -24,4 +24,4 @@ mysql-connector-python
 mysql-connector-python-rf
 termcolor
 gunicorn
-dotenv
+python-dotenv
