@@ -4,6 +4,7 @@ from firebase_admin import db, credentials
 from dotenv import load_dotenv
 from termcolor import colored
 from datetime import datetime
+from hashlib import sha256
 
 # TODO:
 # Create validation if class_id in "user" docs is exist in id in "class" docs, etc.
@@ -51,15 +52,12 @@ class Firebase:
     
     def push(self, contents):
         self.ref.push().set(contents)
-        print(colored("query: push", "blue"))
             
     def update(self, path, contents):
         self.ref.child(path).update(contents)
-        print(colored("query: update", "green"))
     
     def delete(self, path):
         self.ref.child(path).delete()
-        print(colored("query: delete", "red"))
         
     def select_from(self, _from, condition):
         # AND only
@@ -91,27 +89,6 @@ class Firebase:
                 result.append(res)
         
         return result
-
-# target=2021118576
-# today = datetime.now().strftime("%Y-%m-%d %H:%M:%S").split(" ")[0]
-# null_datetime = "0000-00-00 00:00:00"
-
-# app = Firebase()
-# snap = app.select_from("presence", condition=[
-#     ["student_id", target],
-#     ["time_in", "LIKE", today],
-#     ["time_out", null_datetime]
-# ])
-
-# print(len(snap) > 0)
-
-# app = Firebase()
-# app.ref = app.reference("users")
-# app.push({
-#     "name": "Dhafin Qinthara Khalish",
-#     "class_id": 1,
-#     "id": 2021118888,
-#     "email": "dhafin@email.com",
-#     "password": "12345678",
-#     "telp": ""
-# })
+    
+    def hash(self, string):
+        return sha256(string.encode('utf-8')).hexdigest()
