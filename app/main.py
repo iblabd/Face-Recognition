@@ -61,7 +61,7 @@ def login():
         if account:
             session['loggedin'], session['id'] = True, account['id']
             print('Logged in successfully!')
-            return redirect(url_for("index"))
+            return redirect(url_for("dashboard"))
         else:
             print("Incorrect Username/Password")
     return render_template('login.html')
