@@ -1,26 +1,32 @@
 .bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
 
-  @media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-      font-size: 3.5rem;
-    }
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
   }
+}
 
-  /* Show it is fixed to the top */
-  body {
-    min-height: 75rem;
-    padding-top: 8rem;
-  }
+/* Show it is fixed to the top */
+body {
+  min-height: 75rem;
+  padding-top: 8rem;
+}
 
-  .btn-danger {
-    padding-left: 32px;
-    padding-right: 32px;;
-  }
+.btn-danger {
+  padding-left: 32px;
+  padding-right: 32px;
+  ;
+}
 
-  
+.frame {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  object-fit: contain;
+}
