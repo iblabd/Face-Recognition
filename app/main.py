@@ -37,15 +37,23 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
+
     def find_user_by_id(id, limit=1):
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         query = f"SELECT * FROM siswa WHERE siswa.id={id} LIMIT 1"
         cursor.execute(query)
-        return cursor.fetchone()
+        return cursor.fetchone(), redirect(url_for('verif'))
     
     target = find_user_by_id(session['id'])
 
     return Response(controller.gen_frames(target=target), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/verif')
+def verif():
+    if "loggedin" in session:
+        return render_template('verification.html', id=session['id'])
+    return redirect(url_for('login'))
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
