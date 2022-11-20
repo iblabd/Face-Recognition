@@ -158,8 +158,7 @@ class Controller:
                             
                             self.tempSession(
                                 onUser=self.app.hash(str(target["id"])), 
-                                status=status
-                            )
+                                status=status)
                             
                             break
                     
@@ -171,15 +170,14 @@ class Controller:
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
     def tempSession(self, onUser, status):
-        if status != 0:
-            constData = json.dumps({
-            "onUser": onUser,
-            "status": status
-            }, indent=4)
-            
-            file = open("tempSession.json", "w")
-            file.write(constData)
-            file.close()
+        constData = json.dumps({
+        "onUser": onUser,
+        "status": status
+        }, indent=4)
+        
+        file = open("tempSession.json", "w")
+        file.write(constData)
+        file.close()
     
     def tempSessionClear(self):
         open("tempSession.json", "w").truncate(0)

@@ -16,18 +16,38 @@ function get(param) {
     return $_GET[param];
 }
 
+function bringMeBack() {
+    let currentURL = window.location.href
+    location.replace(currentURL.replace("after?s=0", "index")) 
+}
+
 function main() {
     let status = get("s")
 
     let text = document.getElementById("text")
+    let button = document.getElementById("btn-try-again")
+    let img = document.getElementById("img")
     let message = ""
 
-    if(status == 1)
-        message = "Yay! Presensi masuk telah berhasil!! <⁠(⁠￣⁠︶⁠￣⁠)⁠>"
-    else if(status == 2)
+    button.setAttribute("style", "transform: scale(2);\nmargin-top: 30px;")
+    
+    img.style.display = "none"
+
+    if(status == 1){
+        img.style.display = "block"
+        button.style.display = "none"
+        message = "Kamu sudah melakukan presensi masuk !! <⁠(⁠￣⁠︶⁠￣⁠)⁠>"
+    }else if(status == 2){
+        img.style.display = "block"
+        button.style.display = "none"
         message = "Presensi hari ini sudah selesai!! (⁠ ⁠╹⁠▽⁠╹⁠ ⁠)⁠✧"
-    else
-        message = "Furesenshi gagaru desu (⁠-_-⁠メ⁠)"
+    }else {
+        button.style.display = "block"
+        message = "Presensi gagal desu (⁠-_-⁠メ⁠)"
+        img.style.display = "none"
+    }
+
+    text.style.fontSize = "100px;"
     text.innerHTML = message
 }
 

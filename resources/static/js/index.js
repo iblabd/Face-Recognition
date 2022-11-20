@@ -24,9 +24,11 @@ function buttonOnClick() {
     const hour = new Date().getHours();
 
     (async () => {
-        sleep(3000)
+        // sleep(3000)
         tags = await get(url)
         console.log(tags["status"])
+
+        sleep(5000)
         if(tags["status"] == 1 
         // && (hour >= 6 && hour <= 7)
         ) {
@@ -37,6 +39,7 @@ function buttonOnClick() {
             location.replace(getCurrentURL().replace("index", "after?s=2"))
         }else {
             location.replace(getCurrentURL().replace("index", "after?s=0"))
+            // buttonOnClick();
         }
     })()
 
