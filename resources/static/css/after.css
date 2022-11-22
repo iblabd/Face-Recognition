@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+html, body, .container {
+    height: 100%;
+    user-select: none;
+}
+
+* {
+    font-family: 'Poppins';
+}
+#img {
+    display: none;
+}
+.container {
+    display: -webkit-flexbox;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+}
+.onScale {
+    transform: scale(0.5);
+}
+.btn-try-again {
+    display: none;
+}

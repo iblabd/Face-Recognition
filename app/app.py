@@ -23,6 +23,7 @@ def main():
 
 @app.route('/index')
 def index():
+    print("You are now in /index")
     if "loggedin" in session:
         if session['status'] == 0 or session['status'] == 1:
             return render_template('index.html', id=session['id'])
@@ -63,27 +64,25 @@ def login():
             session['loggedin'] = True
             session['id'] = account[0].get("id")
             
-            val = {
-                "hasTimeIn" : controller.has_time_in(session['id']),
-                "hasTimeOut" : controller.has_time_out(session['id'])
-            }
+            hasTimeIn = controller.has_time_in(session['id'])
+            hasTimeOut = controller.has_time_out(session['id'])
             
             now = datetime.datetime.now()
             
-            if val["hasTimeIn"] == 1 and val["hasTimeOut"] == 0:
+            if hasTimeIn == 1 and hasTimeOut == 0:
                 if now.hour >= 14 and now.hour <= 16:
                     status = session['status'] = 0
                 else:
                     status = session['status'] = 1
-            elif val["hasTimeOut"] == 1:
+            elif hasTimeOut == 1:
                 status = session['status'] = 2
             else:
                 status = session['status'] = 0
             
             _hashed = controller.app.hash(account[0].get("name"))
             controller.tempSession(_hashed, status)
-        
-            
+    
+            print("Redirecting to /index")
             return redirect(url_for("index"))
         else:
             print("Incorrect Username/Password")

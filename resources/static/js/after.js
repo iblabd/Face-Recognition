@@ -17,38 +17,39 @@ function get(param) {
 }
 
 function bringMeBack() {
-    let currentURL = window.location.href
-    location.replace(currentURL.replace("after?s=0", "index")) 
+    let currentURL = window.location.href;
+    location.replace(currentURL.replace("after?s=0", "index"));
 }
 
 function main() {
-    let status = get("s")
+    let message = "";
 
-    let text = document.getElementById("text")
-    let button = document.getElementById("btn-try-again")
-    let img = document.getElementById("img")
-    let message = ""
+    const status = get("s");
 
-    button.setAttribute("style", "transform: scale(2);\nmargin-top: 30px;")
+    const text = document.querySelector("#text");
+    const button = document.querySelector("#btn-try-again");
+    const img = document.querySelector("#img");
+
+    button.setAttribute("style", "transform: scale(2);\nmargin-top: 30px;");
     
-    img.style.display = "none"
+    img.style.display = "none";
 
     if(status == 1){
-        img.style.display = "block"
-        button.style.display = "none"
-        message = "Kamu sudah melakukan presensi masuk !! <⁠(⁠￣⁠︶⁠￣⁠)⁠>"
+        img.style.display = "block";
+        button.style.display = "none";
+        message = "Kamu sudah melakukan presensi masuk !! <⁠(⁠￣⁠︶⁠￣⁠)⁠>";
     }else if(status == 2){
-        img.style.display = "block"
-        button.style.display = "none"
-        message = "Presensi hari ini sudah selesai!! (⁠ ⁠╹⁠▽⁠╹⁠ ⁠)⁠✧"
+        img.style.display = "block";
+        button.style.display = "none";
+        message = "Presensi hari ini sudah selesai!! (⁠ ⁠╹⁠▽⁠╹⁠ ⁠)⁠✧";
     }else {
-        button.style.display = "block"
-        message = "Presensi gagal desu (⁠-_-⁠メ⁠)"
-        img.style.display = "none"
+        button.style.display = "block";
+        message = "Presensi gagal desu (⁠-_-⁠メ⁠)";
+        img.style.display = "none";
     }
 
-    text.style.fontSize = "100px;"
-    text.innerHTML = message
+    text.style.fontSize = "100px;";
+    text.innerHTML = message;
 }
 
-main()
+main();

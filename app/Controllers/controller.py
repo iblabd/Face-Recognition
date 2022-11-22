@@ -102,10 +102,11 @@ class Controller:
         load_dotenv()
 
         video_capture = cv2.VideoCapture(0)
-        video_capture.open(1)
 
         if not video_capture.isOpened():
             raise EnvironmentError("Camera failed to open")
+        
+        video_capture.open(1)
 
         with open("yamori.json") as JSON:
             image_face_encoding = json.load(JSON)

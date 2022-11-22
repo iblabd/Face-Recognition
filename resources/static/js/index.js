@@ -45,5 +45,5 @@ function buttonOnClick() {
 
 }
 
-sleep(3000)
-document.getElementById("button").click()
+// sleep(2000)
+// document.getElementById("btnScreenshot").click()
