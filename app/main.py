@@ -42,11 +42,7 @@ def video_feed():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         query = f"SELECT * FROM siswa WHERE siswa.id={id} LIMIT 1"
         cursor.execute(query)
-<<<<<<< Updated upstream
-        return cursor.fetchone(), redirect(url_for('verif')) 
-=======
-        return cursor.fetchone(), redirect(url_for('verif'))
->>>>>>> Stashed changes
+        return cursor.fetchone()
     
     target = find_user_by_id(session['id'])
 
@@ -56,11 +52,7 @@ def video_feed():
 def verif():
     if "loggedin" in session:
         return render_template('verification.html', id=session['id'])
-<<<<<<< Updated upstream
-        
-=======
     
->>>>>>> Stashed changes
     return redirect(url_for('login'))
 
 
