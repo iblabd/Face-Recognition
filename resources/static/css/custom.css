@@ -1,4 +1,5 @@
 .bd-placeholder-img {
+<<<<<<< HEAD
   font-size: 1.125rem;
   text-anchor: middle;
   -webkit-user-select: none;
@@ -30,3 +31,25 @@ body {
   width: 100%;
   object-fit: contain;
 }
+=======
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  /* Show it is fixed to the top */
+  body {
+    min-height: 75rem;
+    padding-top: 8rem;
+  }
+
+  
+>>>>>>> 9ea2f13c42a042cefc5192c4a40e6d399eeed10f

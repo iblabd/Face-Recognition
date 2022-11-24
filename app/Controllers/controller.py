@@ -1,17 +1,20 @@
-from dotenv import load_dotenv
 from termcolor import colored
+from datetime import date, datetime
+from dotenv import load_dotenv
+from flask import request, redirect, url_for, abort, Response
 
-from datetime import date
-from datetime import datetime
-from flask import request
-
-import cv2, os, json, numpy as np
+import sys, os, json, numpy as np
+import cv2
 import face_recognition
-import mysql.connector
+
+from pathlib import Path
+sys.path.insert(0, str(Path(f"{os.getcwd()}\\app")).replace("\\", "/"))
+from Database.firebase import Firebase
 
 class Controller:
     null_datetime = "0000-00-00 00:00:00"
     def __init__(self): 
+<<<<<<< HEAD
         
         [host, user, password, database] = [os.getenv(each) for each in ["MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"]]
         self.mydb = mysql.connector.connect(
@@ -22,46 +25,108 @@ class Controller:
             buffered=True
         )
         self.mycursor = self.mydb.cursor()
+=======
+        self.app = Firebase()
+>>>>>>> 9ea2f13c42a042cefc5192c4a40e6d399eeed10f
     
-    def datetime(self): return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    def datetime(self): 
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    def insert(self, id, has_time_in=False):
-        if not has_time_in:
-            query = f"INSERT INTO `presensi` (`id`, `siswa_id`, `time_in`, `time_out`, `alasan`, `status`) VALUES (NULL, {id}, '{self.datetime()}', 'NULL', NULL, NULL);"
-        else:
-            today = self.datetime().split(" ")[0]
-            query = f"UPDATE presensi SET time_out='{self.datetime()}' WHERE siswa_id={id} AND time_in LIKE '{today}%'"
-            
-        self.mycursor.execute(query)
-        self.mydb.commit()
+    def insertIntoPresence(self, id):
+        # - - - Status - - -
+        # 0 -> No changes applied, most likely because had already made a presence
+        # 1 -> Created new presence record with time_in today and null datetime for time_out
+        # 2 -> Updated presence record with student_id = id on column time_out setted to current datetime
+        has_time_in = self.has_time_in(id)
+        has_time_out = self.has_time_out(id)
         
+        if has_time_in:
+            if has_time_out:
+                message = colored("^ This person had already made a presence today", "red")
+                print(message)
+                
+                return 0
+            else:
+                today = self.datetime().split(" ")[0]
+            
+                self.app.ref = self.app.reference("presence")
+                presence = self.app.select_from("presence", [
+                    ["time_in", "like", today],
+                    ["student_id", id]
+                ])[0]
+                
+                self.app.update(presence.id(), {
+                    "time_out": self.datetime()
+                })
+                
+                print("2")
+                return 2
+                
+        elif not has_time_out:
+            self.app.ref = self.app.reference("presence")
+            self.app.push({
+                "student_id": id,
+                "time_in": self.datetime(),
+                "time_out": self.null_datetime,
+                "reason": "",
+                "status": ""
+            })
+            print("1")
+            return 1
+        # I dont exactly know why, 
+        # but i'll be assuming if time_out exist then this person is already doing the presence twice.
+        # And i think there's something wrong in the has_time_in() function, 
+        # the "LIKE" query in the firebase class to be exact
+        else: 
+            message = colored("^ This person had already made a presence today", "red")
+            print(message)
+            return 0
+            
     def has_time_in(self, target):
         today = self.datetime().split(" ")[0]
-        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target} AND presensi.time_in LIKE '{today}%' AND presensi.time_out = '{self.null_datetime}'"
         
-        self.mycursor.execute(query)
-        self.mydb.commit()
+        self.app.ref = self.app.reference("presence")
+        snap = self.app.select_from("presence", [
+            ["student_id", target]
+        ])
         
-        return not self.mycursor.fetchall() == []
+        # Intersection method
+        records = [each for each in snap if today in each.get("time_in")]
+        return len(records) > 0
         
     def has_time_out(self, target):
         today = self.datetime().split(" ")[0]
-        query = f"SELECT * FROM presensi WHERE presensi.siswa_id={target} AND presensi.time_in LIKE '{today}%' AND NOT presensi.time_out = '{self.null_datetime}'"
         
-        self.mycursor.execute(query)
-        self.mydb.commit()
+        self.app.ref = self.app.reference("presence")
+        snap = self.app.select_from("presence", [
+            ["student_id", target]
+        ])
         
-        return not self.mycursor.fetchall() == []
+        # Intersection method
+        records = [each for each in snap if self.null_datetime not in each.get("time_out") and today in each.get("time_in")]
         
-    def gen_frames(self, target=None):
+        return len(records) > 0
+        
+    def gen_frames(self, session, target=None):
+        person = self.app.select_from("users", [
+            ["id", target["id"]]
+        ])[0]
         
         load_dotenv()
 
         video_capture = cv2.VideoCapture(0)
+<<<<<<< HEAD
         video_capture.open(os.getenv("CAMERA_ADDRESS"))
 
         if not video_capture.isOpened():
             EnvironmentError("Camera failed to open")
+=======
+
+        if not video_capture.isOpened():
+            raise EnvironmentError("Camera failed to open")
+        
+        video_capture.open(1)
+>>>>>>> 9ea2f13c42a042cefc5192c4a40e6d399eeed10f
 
         with open(os.getenv("YAMORI_JSON")) as JSON:
             image_face_encoding = json.load(JSON)
@@ -79,8 +144,7 @@ class Controller:
         process_this_frame = True
 
         while True:
-            print(self.datetime().split(" ")[0])
-            success, frame = video_capture.read()  # read the camera frame
+            success, frame = video_capture.read()
             if not success:
                 break
             else:
@@ -106,28 +170,17 @@ class Controller:
                         face_names.append(name)
 
                 if len(face_names) != 0:
-                    print(f"Detected face: {face_names}")
+                    n = person.get('name').upper()
+                    print(f"Detected face: {face_names}, expected at least {n} in detected faces")
                     
                     if target != None:
-                        if target["nama"].upper() in face_names:
+                        if target["name"].upper() in face_names:
+                            status = self.insertIntoPresence(target["id"])
                             
-                            has_time_in, has_time_out = self.has_time_in(target["id"]), self.has_time_out(target["id"])
+                            self.tempSession(
+                                onUser=self.app.hash(str(target["id"])), 
+                                status=status)
                             
-                            if has_time_in and has_time_out:
-                                string = colored("^ This person had already made a presence", "blue")
-                                print(string)
-                            else:
-                                if not has_time_in and not has_time_out:
-                                    status = "time_in"
-                                elif has_time_in and not has_time_out :
-                                    status = "time_out"
-                                
-                                self.insert(target["id"], has_time_in=has_time_in)
-                                
-                                name = colored(target["nama"].upper(), "green")
-                                
-                                print(f"{self.datetime} {name} done {status}")
-    
                             break
                     
                 process_this_frame = not process_this_frame
@@ -136,5 +189,17 @@ class Controller:
                 frame = buffer.tobytes()
                 yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-               
-             
+
+    def tempSession(self, onUser, status):
+        constData = json.dumps({
+        "onUser": onUser,
+        "status": status
+        }, indent=4)
+        
+        file = open("tempSession.json", "w")
+        file.write(constData)
+        file.close()
+    
+    def tempSessionClear(self):
+        open("tempSession.json", "w").truncate(0)
+        

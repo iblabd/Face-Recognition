@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Presensi berhasil!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/after.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="d-block onScale">
+            <img src="{{ url_for('static', filename='images/953a6473-6fd7-4102-b37d-a6aa80ddeac0.png') }}" id="img">
+            <p style="text-align: center; font-size: large;" id="text"></p>
+            <div class="container">
+                <button class="btn btn-primary" id="btn-try-again" onclick="bringMeBack()">Coba lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/after.js') }}"></script>
+</body>
+</html>

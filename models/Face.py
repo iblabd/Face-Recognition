@@ -85,8 +85,13 @@ class Face:
                     return json.load(JSON)
         
         def write(self, image_face_encoding):
+<<<<<<< HEAD
             yamoriJSON = json.dumps(image_face_encoding)
             jsonFile = open(os.getenv("YAMORI_JSON"), "w")
+=======
+            yamoriJSON = json.dumps(image_face_encoding, indent=4)
+            jsonFile = open("./yamori.json", "w")
+>>>>>>> 9ea2f13c42a042cefc5192c4a40e6d399eeed10f
             jsonFile.write(yamoriJSON)
             jsonFile.close()
             print("YAMORI.JSON", colored("changes has been written", "green"))
