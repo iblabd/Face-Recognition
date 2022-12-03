@@ -14,13 +14,6 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 controller = Controller()
 
-config = ["MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"]
-
-for each in config:
-    app.config[each] = os.getenv(each)
-
-mysql = MySQL(app)
-
 @app.route('/')
 def dashboard():
     if "loggedin" in session:
@@ -38,15 +31,19 @@ def index():
 @app.route('/video_feed')
 def video_feed():
 
-    def find_user_by_id(id, limit=1):
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = f"SELECT * FROM siswa WHERE siswa.id={id} LIMIT 1"
-        cursor.execute(query)
-        return cursor.fetchone(), redirect(url_for('verif'))
-    
-    target = find_user_by_id(session['id'])
+    def userOnId(id):
+        snap = controller.app.select_from("users", [
+            ["id", id]
+        ])
 
-    return Response(controller.gen_frames(target=target), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return snap[0].get()
+    
+    target = userOnId(session['id'])
+    
+    return Response(
+        controller.gen_frames(session=session, target=target), 
+        mimetype='multipart/x-mixed-replace; boundary=frame'
+    )
 
 @app.route('/verif')
 def verif():
@@ -57,17 +54,18 @@ def verif():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-        username = request.form['username']
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
+        email = request.form['username']
         password = request.form['password']
         
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = f"SELECT * FROM siswa WHERE (siswa.nama='{username}' OR siswa.id='{username}') AND siswa.password='{password}' LIMIT 1"
-        cursor.execute(query)
-        account = cursor.fetchone()
+        account = controller.app.select_from("teacher", condition=[
+            ["email", email],
+            ["password", password]
+        ])
         
-        if account:
-            session['loggedin'], session['id'] = True, account['id']
+        if len(account) > 0:
+            session['loggedin'] = True
+            session['id'] = account[0].get("id")
             print('Logged in successfully!')
             return redirect(url_for("dashboard"))
         else:
