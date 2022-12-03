@@ -114,14 +114,14 @@ class Controller:
         
         video_capture.open(1)
 
-        with open("yamori.json") as JSON:
+        with open(os.getenv("YAMORI_JSON")) as JSON:
             image_face_encoding = json.load(JSON)
             known_face_encodings = []
             
             for key, value in image_face_encoding.items():
                 known_face_encodings.append(np.array(value))
 
-        students = os.listdir("images/")
+        students = os.listdir(os.getenv("IMAGE_PATH"))
         known_face_names = [os.path.splitext(string)[0] for string in students if string != ".gitignore"]
 
         face_locations = []
@@ -206,7 +206,7 @@ class Controller:
         if data_url != None:
             self.__download_dataURL(expected=expected, data_url=data_url)
         
-        with open("yamori.json") as jsonfile:
+        with open(os.getenv("YAMORI_JSON")) as jsonfile:
             image_face_encodings = json.load(jsonfile)
         
         predict_image = face_recognition.load_image_file(self.filename)
