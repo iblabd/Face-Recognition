@@ -55,7 +55,7 @@ def verif():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
-        email = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         
         account = controller.app.select_from("teacher", condition=[
