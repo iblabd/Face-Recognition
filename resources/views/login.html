@@ -9,6 +9,7 @@
     <link href="{{ url_for('static', filename='css/stylelogin.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
   </head>
 
 <body class="body px-2">
@@ -19,14 +20,20 @@
     </div>
 
     <div class="auto">
+      {% if msg != 0 %}
+          <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <div>
+              {{ msg }}
+            </div>
+          </div>
+      {% endif %}
       <div class="justify-content-center">
         <div class="d-flex"><label for="uname" class="" class="txt"><b>Email</b></label></div>
-        <input type="text" placeholder="Email" name="email" id="email" class="inputstyle" required>
+        <input type="email" placeholder="Email" name="email" id="email" class="inputstyle" required>
+
         <br>
         <div class="d-flex"><label for="psw" class="=" class="txt"><b>Password</b></label></div>
         <input type="password" placeholder="Enter Password" name="password" id="password" class="inputstyle" required>
-        <div class="msg">{{ msg }}</div>
-
         <br>
 
         <div class="d-flex justify-content-start">
@@ -43,6 +50,8 @@
     </div>
 
   </form>
-
+  <script>
+    setTimeout(function() { $(".alert").addClass("d-none"); }, 5000);
+  </script>
 </body>
 </html>

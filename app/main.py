@@ -54,6 +54,7 @@ def verif():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    msg = 0
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
         email = request.form['email']
         password = request.form['password']
@@ -69,8 +70,11 @@ def login():
             print('Logged in successfully!')
             return redirect(url_for("dashboard"))
         else:
-            print("Incorrect Username/Password")
-    return render_template('login.html')
+            msg = "Incorrect username or password"
+            print(msg)
+            return render_template('login.html', msg = msg)
+        
+    return render_template('login.html', msg = msg)
 
 @app.route('/logout')
 def logout():
