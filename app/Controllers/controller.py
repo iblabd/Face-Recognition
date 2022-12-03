@@ -41,8 +41,8 @@ class Controller:
             else:
                 today = self.datetime().split(" ")[0]
             
-                self.app.ref = self.app.reference("presence")
-                presence = self.app.select_from("presence", [
+                self.app.ref = self.app.reference("gate_presence")
+                presence = self.app.select_from("gate_presence", [
                     ["time_in", "like", today],
                     ["student_id", id]
                 ])[0]
@@ -56,7 +56,7 @@ class Controller:
                 return 2
                 
         elif not has_time_out:
-            self.app.ref = self.app.reference("presence")
+            self.app.ref = self.app.reference("gate_presence")
             self.app.push({
                 "student_id": id,
                 "time_in": self.datetime(),
@@ -78,8 +78,8 @@ class Controller:
     def has_time_in(self, target):
         today = self.datetime().split(" ")[0]
         
-        self.app.ref = self.app.reference("presence")
-        snap = self.app.select_from("presence", [
+        self.app.ref = self.app.reference("gate_presence")
+        snap = self.app.select_from("gate_presence", [
             ["student_id", target]
         ])
         
@@ -90,8 +90,8 @@ class Controller:
     def has_time_out(self, target):
         today = self.datetime().split(" ")[0]
         
-        self.app.ref = self.app.reference("presence")
-        snap = self.app.select_from("presence", [
+        self.app.ref = self.app.reference("gate_presence")
+        snap = self.app.select_from("gate_presence", [
             ["student_id", target]
         ])
         
