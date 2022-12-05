@@ -32,30 +32,7 @@ class Controller:
         has_time_in = self.has_time_in(id)
         has_time_out = self.has_time_out(id)
         
-        if has_time_in:
-            if has_time_out:
-                message = colored("^ This person had already made a presence today", "red")
-                print(message)
-                
-                return 2
-            else:
-                today = self.datetime().split(" ")[0]
-            
-                self.app.ref = self.app.reference("gate_presence")
-                presence = self.app.select_from("gate_presence", [
-                    ["time_in", "like", today],
-                    ["student_id", id]
-                ])[0]
-                
-                self.app.update(presence.id(), {
-                    "time_out": self.datetime(),
-                    "status": 2
-                })
-                
-                print("2")
-                return 2
-                
-        elif not has_time_out:
+        if not has_time_in:
             self.app.ref = self.app.reference("gate_presence")
             self.app.push({
                 "student_id": id,
@@ -66,6 +43,7 @@ class Controller:
             })
             print("1")
             return 1
+            
         # I dont exactly know why, 
         # but i'll be assuming if time_out exist then this person is already doing the presence twice.
         # And i think there's something wrong in the has_time_in() function, 
