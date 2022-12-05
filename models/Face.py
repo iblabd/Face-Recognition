@@ -30,7 +30,7 @@ class Face:
         print(colored("INITIALIZING ", "cyan"), "image_face_encoding ...")        
         
         for student_name in students:
-            images[student_name] = face_recognition.load_image_file(f"images/{student_name}.jpg")
+            images[student_name] = face_recognition.load_image_file(f"../images/{student_name}.jpg")
             print(f"{student_name} loaded")
             
             print(colored("ENCODING ", "blue"), f"{student_name} ...")
@@ -57,7 +57,7 @@ class Face:
             pass
         def __intersection__(self):
             JSON = self.load().keys()
-            DIR = os.listdir(os.getenv("IMAGE_PATH"))
+            DIR = os.listdir("../images")
             DIR = [os.path.splitext(string)[0] for string in DIR]
             
             changes = []
@@ -76,23 +76,23 @@ class Face:
             return changes
             
         def load(self):
-            isEmpty = os.stat(os.getenv("YAMORI_JSON")).st_size == 0
+            isEmpty = os.stat("../yamori.json").st_size == 0
             
             if isEmpty:
                 return 0
             else:
-                with open(os.getenv("YAMORI_JSON")) as JSON:
+                with open("../yamori.json") as JSON:
                     return json.load(JSON)
         
         def write(self, image_face_encoding):
             yamoriJSON = json.dumps(image_face_encoding)
-            jsonFile = open(os.getenv("YAMORI_JSON"), "w")
+            jsonFile = open("../yamori.json", "w")
             jsonFile.write(yamoriJSON)
             jsonFile.close()
             print("YAMORI.JSON", colored("changes has been written", "green"))
             
         def clear(self):
-            jsonFile = open(os.getenv("YAMORI_JSON"), "w").truncate(0)
+            jsonFile = open("../yamori.json", "w").truncate(0)
             print("YAMORI.JSON ", colored("clearly truncated", "red"))
             
         def checkUpdates(self):
@@ -100,7 +100,7 @@ class Face:
             JSON = list(JSON)
             JSON = len(JSON)
             
-            DIR = os.listdir(os.getenv("IMAGE_PATH"))
+            DIR = os.listdir("../images")
             DIR = [os.path.splitext(string)[0] for string in DIR]
             DIR = len(DIR)
             
