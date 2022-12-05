@@ -17,9 +17,46 @@ controller = Controller()
 @app.route('/')
 def dashboard():
     if "loggedin" in session:
-        return render_template('dashboard.html', id=session['id'])
-    
+        # presence_history = controller.app.reference("gate_presence").get()
+        # x = controller.app.select_from("gate_presence")
+        # student_id = x.get("student_id")  
+        def getStudentName(on_id):
+            return app.select_from("users", [
+                ["id", on_id]
+            ])[0].get("name")
+            
+        snap = controller.app.reference("gate_presence").get()
+
+        result = []
+        for key, val in snap.items():
+            student_id = val["student_id"]
+            val["student_name"] = getStudentName(student_id)
+            
+            res = {key: val}
+            res = Record(res)
+            result.append(res)
+            
+        def getStudentClass(on_id):
+            return app.select_from("class", [
+                ["id", on_id]
+            ])[0].get("name")
+                
+        snap = controller.app.reference("users").get()
+
+        result = []
+        for key, val in snap.items():
+            class_id = val["class_id"]
+            val["class_name"] = getStudentClass(class_id)
+                
+            res = {key: val}
+            res = Record(res)
+            result.append(res)
+        return render_template('dashboard.html', id=session['id'], student=result)
     return redirect(url_for('login'))
+
+for each in result:
+    each.show()
+    
 
 @app.route('/index')
 def index():
