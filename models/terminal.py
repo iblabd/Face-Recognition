@@ -7,7 +7,7 @@ def main():
     while True:
         options = input(colored(">>> ", "cyan"))
         if options == "encode":
-            face_encode = faces.encode(path="images/")
+            face_encode = faces.encode(path="../images")
             faces.JSON().write(face_encode)
         if options == "update":
             faces.JSON().update()

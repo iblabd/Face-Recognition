@@ -32,30 +32,7 @@ class Controller:
         has_time_in = self.has_time_in(id)
         has_time_out = self.has_time_out(id)
         
-        if has_time_in:
-            if has_time_out:
-                message = colored("^ This person had already made a presence today", "red")
-                print(message)
-                
-                return 2
-            else:
-                today = self.datetime().split(" ")[0]
-            
-                self.app.ref = self.app.reference("gate_presence")
-                presence = self.app.select_from("gate_presence", [
-                    ["time_in", "like", today],
-                    ["student_id", id]
-                ])[0]
-                
-                self.app.update(presence.id(), {
-                    "time_out": self.datetime(),
-                    "status": 2
-                })
-                
-                print("2")
-                return 2
-                
-        elif not has_time_out:
+        if not has_time_in:
             self.app.ref = self.app.reference("gate_presence")
             self.app.push({
                 "student_id": id,
@@ -66,6 +43,7 @@ class Controller:
             })
             print("1")
             return 1
+            
         # I dont exactly know why, 
         # but i'll be assuming if time_out exist then this person is already doing the presence twice.
         # And i think there's something wrong in the has_time_in() function, 
@@ -101,10 +79,6 @@ class Controller:
         return len(records) > 0
     
     def gen_frames(self, session, target=None):
-        person = self.app.select_from("users", [
-            ["id", target["id"]]
-        ])[0]
-        
         load_dotenv()
 
         video_capture = cv2.VideoCapture(0)
@@ -112,7 +86,7 @@ class Controller:
         if not video_capture.isOpened():
             raise EnvironmentError("Camera failed to open")
         
-        video_capture.open(1)
+        video_capture.open(os.getenv("CAMERA_ADDRESS"))
 
         with open(os.getenv("YAMORI_JSON")) as JSON:
             image_face_encoding = json.load(JSON)
@@ -123,6 +97,7 @@ class Controller:
 
         students = os.listdir(os.getenv("IMAGE_PATH"))
         known_face_names = [os.path.splitext(string)[0] for string in students if string != ".gitignore"]
+        print(known_face_names)
 
         face_locations = []
         face_encodings = []
@@ -156,18 +131,27 @@ class Controller:
                         face_names.append(name)
 
                 if len(face_names) != 0:
-                    n = person.get('name').upper()
-                    print(f"Detected face: {face_names}, expected at least {n} in detected faces")
+                    # person = self.app.select_from("users", [
+                    #     ["id", face_names]])
+                    for each in face_names:
+                        if each != "Unknown":
+                            person = self.app.select_from("users", [
+                                ["id", int(each)]
+                            ])[0]
+                            n = person.get("name")
+                            print(f"Detected face: {n}")
+
+                            self.insertIntoPresence(int(each))
                     
-                    if target != None:
-                        if target["name"].upper() in face_names:
-                            status = self.insertIntoPresence(target["id"])
+                    # if target != None:
+                    #     if target["name"].upper() in face_names:
+                    #         status = self.insertIntoPresence(target["id"])
                             
-                            self.tempSession(
-                                onUser=self.app.hash(str(target["id"])), 
-                                status=status)
+                    #         self.tempSession(
+                    #             onUser=self.app.hash(str(target["id"])), 
+                    #             status=status)
                             
-                            break
+                    #         break
                     
                 process_this_frame = not process_this_frame
 
@@ -176,35 +160,35 @@ class Controller:
                 yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-    def tempSession(self, onUser, status):
-        constData = json.dumps({
-        "onUser": onUser,
-        "status": status
-        }, indent=4)
+    # def tempSession(self, onUser, status):
+    #     constData = json.dumps({
+    #     "onUser": onUser,
+    #     "status": status
+    #     }, indent=4)
         
-        file = open("tempSession.json", "w")
-        file.write(constData)
-        file.close()
+    #     file = open("tempSession.json", "w")
+    #     file.write(constData)
+    #     file.close()
     
-    def tempSessionClear(self):
-        open("tempSession.json", "w").truncate(0)
+    # def tempSessionClear(self):
+    #     open("tempSession.json", "w").truncate(0)
     
-    def __truncate_files_in_temp(self):
-        mydir = "./temp"
-        filelist = [ files for files in os.listdir(mydir) if files.endswith(".jpg") ]
-        for f in filelist:
-            os.remove(os.path.join(mydir, f))
+    # def __truncate_files_in_temp(self):
+    #     mydir = "./temp"
+    #     filelist = [ files for files in os.listdir(mydir) if files.endswith(".jpg") ]
+    #     for f in filelist:
+    #         os.remove(os.path.join(mydir, f))
     
-    def __download_dataURL(self, expected, data_url):
-        name = "".join(expected.split(" "))
-        on_date = datetime.now().strftime("%Y%m%d%H%M%S")
-        self.filename = f"{self.currentdir}/temp/{name}{on_date}.jpg"
-        self.filename = self.filename.replace("/", "\\")
-        urllib.request.urlretrieve(data_url, filename=self.filename)
+    # def __download_dataURL(self, expected, data_url):
+    #     name = "".join(expected.split(" "))
+    #     on_date = datetime.now().strftime("%Y%m%d%H%M%S")
+    #     self.filename = f"{self.currentdir}/temp/{name}{on_date}.jpg"
+    #     self.filename = self.filename.replace("/", "\\")
+    #     urllib.request.urlretrieve(data_url, filename=self.filename)
         
     def predict(self, expected, data_url=None):
-        if data_url != None:
-            self.__download_dataURL(expected=expected, data_url=data_url)
+        # if data_url != None:
+        #     self.__download_dataURL(expected=expected, data_url=data_url)
         
         with open(os.getenv("YAMORI_JSON")) as jsonfile:
             image_face_encodings = json.load(jsonfile)
@@ -234,6 +218,6 @@ class Controller:
 
             face_names.append(name)
             
-        self.__truncate_files_in_temp()
+        # self.__truncate_files_in_temp()
         
         return expected in face_names
