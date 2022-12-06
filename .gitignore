@@ -1,3 +1,8 @@
 .env
+.vs
+.idea
 **/__pycache__
 /images/
+*.pyc
+yamori.json
+firebase-adminsdk.json
