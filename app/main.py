@@ -6,6 +6,7 @@ from termcolor import colored
 from datetime import date
 
 from Controllers.controller import Controller
+from Database.firebase import Record
 
 import numpy as np, cv2, face_recognition, os, json, MySQLdb.cursors
 
@@ -17,9 +18,34 @@ controller = Controller()
 @app.route('/')
 def dashboard():
     if "loggedin" in session:
-        return render_template('dashboard.html', id=session['id'])
-    
+        # val["user_name"] = session['user']['name']
+              
+        def getStudentName(on_id):
+            return controller.app.select_from("users", [
+                ["id", on_id]
+            ])[0]
+        def getStudentClass(on_id):
+            return controller.app.select_from("class", [
+                ["id", on_id]
+            ])[0].get("name")    
+        snap = controller.app.reference("gate_presence").get()
+
+        result = []
+        for key, val in snap.items():
+            student_id = val["student_id"]
+            val["student_name"] = getStudentName(student_id).get("name")
+            val["class_name"] = getStudentClass(getStudentName(student_id).get("class_id"))
+            
+            res = {key: val}
+            res = Record(res)
+            result.append(res)                
+        print(result)
+        
+        return render_template('dashboard.html', id=session['id'], result=result, user=session['user'])
     return redirect(url_for('login'))
+
+
+    
 
 @app.route('/index')
 def index():
@@ -67,6 +93,9 @@ def login():
         if len(account) > 0:
             session['loggedin'] = True
             session['id'] = account[0].get("id")
+            session["user"] = {
+                                "name": account[0].get("name"),
+                                "email": account[0].get("email")}
             print('Logged in successfully!')
             return redirect(url_for("dashboard"))
         else:
