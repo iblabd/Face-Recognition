@@ -33,8 +33,8 @@
                             class="rounded-circle" alt=""> </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-7 mb-4 mb-sm-3 mb-md-auto">
-                    <h2>Selamat pagi, John!</h2>
-                    <p class="lead">13 September 2022</p>
+                    <h2>Selamat datang, {{ user["name"] }}!</h2>
+                    <p class="lead">07 Desember 2022</p>
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-3 d-flex justify-content-end"> <a href="{{url_for('logout')}}" type="button" name="" id=""
                         class="btn btn-primary col-12 col-sm-12 col-md-auto col-lg-7 col-xl-6"><i
@@ -76,17 +76,10 @@
                <tbody>
                 {% for d in result %}
                 <tr>
-                    <td>{{ d.get("name")}}</td>
-                    <td>{{ d.get("class")}}</td>
+                    <td>{{ d.get("student_name")}}</td>
+                    <td>{{ d.get("class_name")}}</td>
                     <td>{{ d.get("time_in")}}</td>
                     <td>{{ d.get("status")}}</td>
-                    <!-- <td class="d-flex justify-content-start align-items-center"> <img
-                            src="{{url_for('static', filename='images/z2.jpg')}}" width="32px"
-                            class="rounded-circle d-none d-md-block me-0 me-md-1" alt=""> Raditya Kanahaya</td>
-                    <td>XII RPL 1</td>
-                    <td>31/12/2022</td>
-                    <td>06:59:58</td>
-                    <td>Tepat Waktu</td> -->
                 </tr>
                 {% endfor %}
                </tbody>
