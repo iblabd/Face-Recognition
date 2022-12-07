@@ -41,7 +41,7 @@ class Controller:
                 "reason": "",
                 "status": 1
             })
-            print("1")
+            print("Present has been stored to database.")
             return 1
             
         # I dont exactly know why, 
@@ -97,11 +97,12 @@ class Controller:
 
         students = os.listdir(os.getenv("IMAGE_PATH"))
         known_face_names = [os.path.splitext(string)[0] for string in students if string != ".gitignore"]
-        print(known_face_names)
+        print(f"Total student images: {len(known_face_names)}")
 
         face_locations = []
         face_encodings = []
         face_names = []
+        students_face = []
         process_this_frame = True
 
         while True:
@@ -131,64 +132,29 @@ class Controller:
                         face_names.append(name)
 
                 if len(face_names) != 0:
-                    # person = self.app.select_from("users", [
-                    #     ["id", face_names]])
                     for each in face_names:
                         if each != "Unknown":
                             person = self.app.select_from("users", [
                                 ["id", int(each)]
                             ])[0]
+                            students_face.append(each)
                             n = person.get("name")
                             print(f"Detected face: {n}")
-
-                            self.insertIntoPresence(int(each))
-                    
-                    # if target != None:
-                    #     if target["name"].upper() in face_names:
-                    #         status = self.insertIntoPresence(target["id"])
+                        
+                            if students_face.count(each) > 5:
+                                print(students_face)
+                                print(f"{n} face appear more than 5 times in list")
+                                self.insertIntoPresence(int(each))
+                                students_face.clear()
                             
-                    #         self.tempSession(
-                    #             onUser=self.app.hash(str(target["id"])), 
-                    #             status=status)
-                            
-                    #         break
-                    
                 process_this_frame = not process_this_frame
 
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
                 yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-    # def tempSession(self, onUser, status):
-    #     constData = json.dumps({
-    #     "onUser": onUser,
-    #     "status": status
-    #     }, indent=4)
-        
-    #     file = open("tempSession.json", "w")
-    #     file.write(constData)
-    #     file.close()
-    
-    # def tempSessionClear(self):
-    #     open("tempSession.json", "w").truncate(0)
-    
-    # def __truncate_files_in_temp(self):
-    #     mydir = "./temp"
-    #     filelist = [ files for files in os.listdir(mydir) if files.endswith(".jpg") ]
-    #     for f in filelist:
-    #         os.remove(os.path.join(mydir, f))
-    
-    # def __download_dataURL(self, expected, data_url):
-    #     name = "".join(expected.split(" "))
-    #     on_date = datetime.now().strftime("%Y%m%d%H%M%S")
-    #     self.filename = f"{self.currentdir}/temp/{name}{on_date}.jpg"
-    #     self.filename = self.filename.replace("/", "\\")
-    #     urllib.request.urlretrieve(data_url, filename=self.filename)
         
     def predict(self, expected, data_url=None):
-        # if data_url != None:
-        #     self.__download_dataURL(expected=expected, data_url=data_url)
         
         with open(os.getenv("YAMORI_JSON")) as jsonfile:
             image_face_encodings = json.load(jsonfile)
@@ -217,7 +183,5 @@ class Controller:
                 name = expected
 
             face_names.append(name)
-            
-        # self.__truncate_files_in_temp()
         
         return expected in face_names
