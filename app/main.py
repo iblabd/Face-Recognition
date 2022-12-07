@@ -84,10 +84,11 @@ def login():
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
         email = request.form['email']
         password = request.form['password']
+        _hashed = controller.app.hash(password)
         
         account = controller.app.select_from("teacher", condition=[
             ["email", email],
-            ["password", password]
+            ["password", _hashed]
         ])
         
         if len(account) > 0:
