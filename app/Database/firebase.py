@@ -32,6 +32,9 @@ class Record:
     def show(self):
         print(self.value)
 
+    def set(self, key, val):
+        self.value[self.id()][key] = val
+
 class Firebase:
     ref = None
     def __init_app(self, cred_object): 

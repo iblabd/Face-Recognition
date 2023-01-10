@@ -8,7 +8,8 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{url_for('static', filename='css/custom.css')}}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/c47bf836a3.js" crossorigin="anonymous"></script>
@@ -36,7 +37,8 @@
                     <h2>Selamat datang, {{ user["name"].capitalize().split(" ")[0] }}!</h2>
                     <p class="lead">{{ date }}</p>
                 </div>
-                <div class="col-sm-12 col-md-3 col-lg-3 d-flex justify-content-end"> <a href="{{url_for('logout')}}" type="button" name="" id=""
+                <div class="col-sm-12 col-md-3 col-lg-3 d-flex justify-content-end"> <a href="{{url_for('logout')}}"
+                        type="button" name="" id=""
                         class="btn btn-primary col-12 col-sm-12 col-md-auto col-lg-7 col-xl-6"><i
                             class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a> </div>
             </div>
@@ -45,51 +47,60 @@
             <div class="row mb-4">
                 <h3>Riwayat Presensi</h3>
             </div>
-            <div class="row d-flex align-items-center mb-4">
-                <div class="mb-3 col-6 col-md-3 col-lg-3"> <label for="startFrom" class="form-text">Mulai dari</label>
-                    <input type="date" class="form-control" id="startFrom"> </div>
-                <div class="mb-3 col-6 col-md-3 col-lg-3"> <label for="toEnd" class="form-text">Sampai</label> <input
-                        type="date" class="form-control" id="toEnd"> </div>
-                <div class="mb-3 col-md-4 col-lg-3"> <label for="studentSearch" class="form-text">Cari siswa</label>
-                    <input type="text" class="form-control" id="studentSearch" placeholder="Nama/NIS/Kelas"> </div>
-                <div
-                    class="col-12 col-md-2 col-lg-3 d-flex flex-row-reverse flex-md-row justify-content-start mt-md-1">
-                    <button type="button" name="" id=""
-                        class="d-flex align-items-center btn btn-primary ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2"><i
-                            class="fa fa-search" aria-hidden="true"></i>
-                        <div class="d-md-none d-lg-block ms-1">Cari</div>
-                    </button> <button type="button" name="" id=""
-                        class="d-flex align-items-center btn btn-outline-primary"><i
-                            class="fa-solid fa-rotate-left"></i>
-                        <div class="d-md-none d-lg-block ms-1">Reset</div>
-                    </button> </div>
-            </div>
-            <table class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
-                <thead> 
-                        <tr class="bg-light border-bottom border-light">
-                            <th scope="col">Nama Siswa</th>
-                            <th scope="col">Kelas</th>
-                            <th scope="col">Tanggal & Waktu</th>
-                            <th scope="col">Status</th>
-                        </tr>
+            <form method="post" action="{{ url_for('dashboard') }}">
+                <div class="row d-flex align-items-center mb-4">
+                    <div class="mb-3 col-6 col-md-3 col-lg-3"> <label for="startFrom" class="form-text">Mulai
+                            dari</label>
+                        <input type="date" class="form-control" id="startFrom"> </div>
+                    <div class="mb-3 col-6 col-md-3 col-lg-3"> <label for="toEnd" class="form-text">Sampai</label>
+                        <input type="date" class="form-control" id="toEnd"> </div>
+                    <div class="mb-3 col-md-4 col-lg-3"> <label for="studentSearch" class="form-text">Cari siswa</label>
+                        <input type="text" class="form-control" id="studentSearch" placeholder="Nama/NIS"
+                            name="studentSearch"> </div>
+                    <div
+                        class="col-12 col-md-2 col-lg-3 d-flex flex-row-reverse flex-md-row justify-content-start mt-md-1">
+                        <button type="submit" name="" id=""
+                            class="d-flex align-items-center btn btn-primary ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2"><i
+                                class="fa fa-search" aria-hidden="true"></i>
+                            <div class="d-md-none d-lg-block ms-1">Cari</div>
+                        </button> <a type="button" name="" id="" href="{{url_for('dashboard')}}"
+                            class="d-flex align-items-center btn btn-outline-primary"><i
+                                class="fa-solid fa-rotate-left"></i>
+                            <div class="d-md-none d-lg-block ms-1">Reset</div>
+                    </a> </div>
+                </div>
+            </form>
+            <table
+                class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
+                <thead>
+                    <tr class="bg-light border-bottom border-light">
+                        <th scope="col">NIS</th>
+                        <th scope="col">Nama Siswa</th>
+                        <th scope="col">Kelas</th>
+                        <th scope="col">Tanggal & Waktu</th>
+                        <th scope="col">Status</th>
+                    </tr>
                 </thead>
-               <tbody>
-                {% for d in result %}
-                <tr>
-                    <td>{{ d.get("student_name")}}</td>
-                    <td>{{ d.get("class_name")}}</td>
-                    <td>{{ d.get("time_in")}}</td>
-                    <td>{{ d.get("status")}}</td>
-                </tr>
-                {% endfor %}
-               </tbody>
-                
+                <tbody>
+                    {% for d in result %}
+                    <tr>
+                        <td>{{ d.get("student_id") }}</td>
+                        <td>{{ d.get("student_name")}}</td>
+                        <td>{{ d.get("student_class")}}</td>
+                        <td>{{ d.get("time_in")}}</td>
+                        <td>{{ d.get("status")}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
             </table>
             <div class="row">
                 <div class="col-8 d-flex d-inline-flex justify-content-end">
-                    <p class="col-7 col-sm-5 col-md-6 d-flex justify-content-end pe-0">Rows <div class="ps-1 ms-0 d-none d-md-block">per page</div></p>
-                    <div class="col-4 col-sm-3 col-md-2 mx-2"> <input class="form-control form-control-sm" list="datalistOptions"
-                            placeholder="1"> <datalist id="datalistOptions">
+                    <p class="col-7 col-sm-5 col-md-6 d-flex justify-content-end pe-0">Rows <div
+                            class="ps-1 ms-0 d-none d-md-block">per page</div>
+                    </p>
+                    <div class="col-4 col-sm-3 col-md-2 mx-2"> <input class="form-control form-control-sm"
+                            list="datalistOptions" placeholder="1"> <datalist id="datalistOptions">
                             <option value="1">
                             <option value="2">
                         </datalist> </div>

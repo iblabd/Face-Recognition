@@ -16,35 +16,66 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 controller = Controller()
 
-@app.route('/')
+@app.route('/', methods=["POST", "GET"])
 def dashboard():
     if "loggedin" in session:
         # val["user_name"] = session['user']['name']
               
-        def getStudentName(on_id):
+        def getStudentById(on_id):   
             return controller.app.select_from("users", [
                 ["id", on_id]
+            ])[0]
+        def getStudentByName(on_name):
+            return controller.app.select_from("users", [
+                ["name", "LIKE", on_name]
             ])[0]
         def getStudentClass(on_id):
             return controller.app.select_from("class", [
                 ["id", on_id]
-            ])[0].get("name")    
-        snap = controller.app.reference("gate_presence").get()
+            ])[0].get("name")
+
+        result = []
+        if request.method == 'POST' and 'studentSearch' in request.form:
+            search_query  = request.form['studentSearch'].upper()
+            
+            if (search_query.isnumeric()):
+                snap = controller.app.select_from("gate_presence", [
+                ["student_id", int(search_query)]
+            ])
+            else:
+                search_query = getStudentByName(search_query).get("id")
+
+                snap = controller.app.select_from("gate_presence", [
+                    ["student_id", int(search_query)]   
+                ])
+
+            for each in snap:
+                student_id = each.get("student_id")
+                student = getStudentById(student_id)
+                try:
+                    each.set("student_name", student.get("name"))
+                    each.set("student_class", getStudentClass(student.get("class_id")))
+                except:
+                    print("Nothing while searching by id.")
+                        
+
+                each.show()
+                result.append(each)
+
+        else:
+            snap = controller.app.reference("gate_presence").get()
+
+            for key, val in snap.items():
+                student_id = val["student_id"]
+                val["student_name"] = getStudentById(student_id).get("name")
+                val["student_class"] = getStudentClass(getStudentById(student_id).get("class_id"))
+                res = {key: val}
+                res = Record(res)
+                result.append(res)
         
         locale.setlocale(locale.LC_TIME, "id_ID")
         datenow = datetime.now()
         date = datenow.strftime("%d %B %Y")
-
-        result = []
-        for key, val in snap.items():
-            student_id = val["student_id"]
-            val["student_name"] = getStudentName(student_id).get("name")
-            val["class_name"] = getStudentClass(getStudentName(student_id).get("class_id"))
-            
-            res = {key: val}
-            res = Record(res)
-            result.append(res)                
-        print(result)
         
         return render_template('dashboard.html', id=session['id'], result=result, user=session['user'], date=date)
     return redirect(url_for('login'))
