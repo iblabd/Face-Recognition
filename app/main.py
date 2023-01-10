@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, R
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 from termcolor import colored
-from datetime import date
+from datetime import datetime
+import locale
 
 from Controllers.controller import Controller
 from Database.firebase import Record
@@ -29,6 +30,10 @@ def dashboard():
                 ["id", on_id]
             ])[0].get("name")    
         snap = controller.app.reference("gate_presence").get()
+        
+        locale.setlocale(locale.LC_TIME, "id_ID")
+        datenow = datetime.now()
+        date = datenow.strftime("%d %B %Y")
 
         result = []
         for key, val in snap.items():
@@ -41,7 +46,7 @@ def dashboard():
             result.append(res)                
         print(result)
         
-        return render_template('dashboard.html', id=session['id'], result=result, user=session['user'])
+        return render_template('dashboard.html', id=session['id'], result=result, user=session['user'], date=date)
     return redirect(url_for('login'))
 
 
