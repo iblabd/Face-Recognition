@@ -57,9 +57,7 @@ def dashboard():
                     each.set("student_class", getStudentClass(student.get("class_id")))
                 except:
                     print("Nothing while searching by id.")
-                        
-
-                each.show()
+                
                 result.append(each)
 
         else:

@@ -88,13 +88,17 @@
                         <td>{{ d.get("student_name")}}</td>
                         <td>{{ d.get("student_class")}}</td>
                         <td>{{ d.get("time_in")}}</td>
-                        <td>{{ d.get("status")}}</td>
+                        {% if d.get("status") == 1 %}
+                        <td>Hadir</td>
+                        {% else %}
+                        <td class="text-danger">Belum Hadir</td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
 
             </table>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-8 d-flex d-inline-flex justify-content-end">
                     <p class="col-7 col-sm-5 col-md-6 d-flex justify-content-end pe-0">Rows <div
                             class="ps-1 ms-0 d-none d-md-block">per page</div>
@@ -112,7 +116,7 @@
                     <i class="fa-solid fa-angle-right"></i>
                     <i class="fa-solid fa-angles-right"></i>
                 </div>
-            </div>
+            </div> -->
         </div>
     </main>
     <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
