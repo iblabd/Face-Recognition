@@ -3,6 +3,7 @@ from datetime import date, datetime
 from dotenv import load_dotenv
 from flask import request, redirect, url_for, abort, Response
 from PIL import Image
+import pyttsx3
 import sys
 import os
 import json
@@ -49,7 +50,11 @@ class Controller:
         # And i think there's something wrong in the has_time_in() function, 
         # the "LIKE" query in the firebase class to be exact
         else: 
-            message = colored("^ This person had already made a presence today", "red")
+            tts = pyttsx3.init()
+            tts.setProperty('voice', 'id-ID')
+            message = "This person had already made a presence today"
+            tts.say(message)
+            tts.runAndWait()
             print(message)
             return None
             
@@ -104,6 +109,8 @@ class Controller:
         face_names = []
         students_face = []
         process_this_frame = True
+        tts = pyttsx3.init()
+        tts.setProperty('voice', 'id-ID')
 
         while True:
             success, frame = video_capture.read()
@@ -138,12 +145,14 @@ class Controller:
                                 ["id", int(each)]
                             ])[0]
                             students_face.append(each)
-                            n = person.get("name")
+                            n = person.get("name").lower()
                             print(f"Detected face: {n}")
                         
                             if students_face.count(each) > 5:
                                 print(students_face)
                                 print(f"{n} face appear more than 5 times in list")
+                                tts.say(f"Hello, {n}.")
+                                tts.runAndWait()
                                 self.insertIntoPresence(int(each))
                                 students_face.clear()
                             
