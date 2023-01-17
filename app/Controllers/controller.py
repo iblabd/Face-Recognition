@@ -3,6 +3,7 @@ from datetime import date, datetime
 from dotenv import load_dotenv
 from flask import request, redirect, url_for, abort, Response
 from PIL import Image
+import pendulum
 import pyttsx3
 import sys
 import os
@@ -11,7 +12,6 @@ import cv2
 import face_recognition
 import urllib
 import numpy as np
-import pendulum
 
 from pathlib import Path
 sys.path.insert(0, str(Path(f"{os.getcwd()}\\app")).replace("\\", "/"))
@@ -19,6 +19,7 @@ from Database.firebase import Firebase
 
 class Controller:
     null_datetime = "0000-00-00 00:00:00"
+
     def __init__(self): 
         self.app = Firebase()
         self.currentdir  = os.getcwd()
@@ -31,6 +32,12 @@ class Controller:
     
     def timenow(self):
         return datetime.now().strftime("%H:%M:%S")
+    
+    def say(self, say):
+        tts = pyttsx3.init()
+        tts.setProperty('voice', 'id-ID')
+        tts.say(say)
+        return tts.runAndWait()
     
     def insertIntoPresence(self, id):
         # - - - Status - - -
@@ -73,11 +80,8 @@ class Controller:
             return 1
             
         else: 
-            tts = pyttsx3.init()
-            tts.setProperty('voice', 'id-ID')
-            message = "This person had already made a presence today"
-            tts.say(message)
-            tts.runAndWait()
+            message = "You had already made a presence today"
+            self.say(message)
             print(message)
             return None
             
@@ -132,8 +136,6 @@ class Controller:
         face_names = []
         students_face = []
         process_this_frame = True
-        tts = pyttsx3.init()
-        tts.setProperty('voice', 'id-ID')
 
         while True:
             success, frame = video_capture.read()
@@ -174,8 +176,7 @@ class Controller:
                             if students_face.count(each) > 5:
                                 print(students_face)
                                 print(f"{n} face appear more than 5 times in list")
-                                tts.say(f"Hello, {n}.")
-                                tts.runAndWait()
+                                self.say(f"{n}, thank you for make presence today.")
                                 self.insertIntoPresence(int(each))
                                 students_face.clear()
                             

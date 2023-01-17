@@ -90,7 +90,7 @@
                         <td>{{ d.get("time_in")}}</td>
                         {% if d.get("status") == 1 %}
                         <td>Hadir</td>
-                        {% else if d.get("status") == 7 %}
+                        {% elif d.get("status") == 7 %}
                         <td class="text-danger">Terlambat</td>
                         {% else %}
                         <td class="text-danger">Belum Hadir</td>
