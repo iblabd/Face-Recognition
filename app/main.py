@@ -71,6 +71,8 @@ def dashboard():
                 res = Record(res)
                 result.append(res)
         
+        result.reverse()
+        
         locale.setlocale(locale.LC_TIME, "id_ID")
         datenow = datetime.now()
         date = datenow.strftime("%d %B %Y")
