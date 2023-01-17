@@ -58,7 +58,7 @@ def dashboard():
                 except:
                     print("Nothing while searching by id.")
                 
-                result.append(each)
+                result.insert(0, each)
 
         else:
             snap = controller.app.reference("gate_presence").get()
@@ -69,9 +69,8 @@ def dashboard():
                 val["student_class"] = getStudentClass(getStudentById(student_id).get("class_id"))
                 res = {key: val}
                 res = Record(res)
-                result.append(res)
+                result.insert(0, res)
         
-        result.reverse()
         
         locale.setlocale(locale.LC_TIME, "id_ID")
         datenow = datetime.now()
