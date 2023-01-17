@@ -26,12 +26,6 @@ class Controller:
     
     def datetime(self): 
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    def today(self):
-        return datetime.now().strftime("%Y-%m-%d")
-    
-    def timenow(self):
-        return datetime.now().strftime("%H:%M:%S")
     
     def say(self, say):
         tts = pyttsx3.init()
@@ -47,9 +41,8 @@ class Controller:
         has_time_in = self.has_time_in(id)
         has_time_out = self.has_time_out(id)
 
-        today = self.today()
-        time = self.timenow()
-        timenow = today + " " + time
+        timenow = self.datetime()
+        today = timenow.split(" ")[0]
         latetime = today + " 07:01:00"
 
         reference_time = pendulum.parse(timenow)
@@ -62,7 +55,7 @@ class Controller:
             if reference_time < compare_time:
                 self.app.push({
                     "student_id": id,
-                    "time_in": self.datetime(),
+                    "time_in": timenow,
                     "time_out": self.null_datetime,
                     "reason": "",
                     "status": 1
