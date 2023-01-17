@@ -11,6 +11,7 @@ import cv2
 import face_recognition
 import urllib
 import numpy as np
+import pendulum
 
 from pathlib import Path
 sys.path.insert(0, str(Path(f"{os.getcwd()}\\app")).replace("\\", "/"))
@@ -24,6 +25,12 @@ class Controller:
     
     def datetime(self): 
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    def today(self):
+        return datetime.now().strftime("%Y-%m-%d")
+    
+    def timenow(self):
+        return datetime.now().strftime("%H:%M:%S")
     
     def insertIntoPresence(self, id):
         # - - - Status - - -
@@ -32,23 +39,39 @@ class Controller:
         # 2 -> Updated presence record with student_id = id on column time_out setted to current datetime
         has_time_in = self.has_time_in(id)
         has_time_out = self.has_time_out(id)
+
+        today = self.today()
+        time = self.timenow()
+        timenow = today + " " + time
+        latetime = today + " 07:01:00"
+
+        reference_time = pendulum.parse(timenow)
+        compare_time = pendulum.parse (latetime)
+        
         
         if not has_time_in:
             self.app.ref = self.app.reference("gate_presence")
-            self.app.push({
-                "student_id": id,
-                "time_in": self.datetime(),
-                "time_out": self.null_datetime,
-                "reason": "",
-                "status": 1
-            })
+            
+            if reference_time < compare_time:
+                self.app.push({
+                    "student_id": id,
+                    "time_in": self.datetime(),
+                    "time_out": self.null_datetime,
+                    "reason": "",
+                    "status": 1
+                })
+
+            else:
+                self.app.push({
+                    "student_id": id,
+                    "time_in": self.datetime(),
+                    "time_out": self.null_datetime,
+                    "reason": "",
+                    "status": 7
+                })
             print("Present has been stored to database.")
             return 1
             
-        # I dont exactly know why, 
-        # but i'll be assuming if time_out exist then this person is already doing the presence twice.
-        # And i think there's something wrong in the has_time_in() function, 
-        # the "LIKE" query in the firebase class to be exact
         else: 
             tts = pyttsx3.init()
             tts.setProperty('voice', 'id-ID')
