@@ -17,9 +17,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container">
             <div class="d-flex justify-align-center my-2"> <img src="{{url_for('static', filename='images/logo.png')}}"
-                width="64" height="64">
-            <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
-        </div>
+                    width="64" height="64">
+                <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -76,10 +76,16 @@
                         <td>Iqbal Abdurrahman</td>
                         <td>XII RPL 1</td>
                         <td>2021118647.siswa@gmail.com</td>
-                        <td><button type="submit" name="" id=""
-                                class="d-flex align-items-center btn btn-danger ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2">
-                                <div class="d-md-none d-lg-block ms-1">Hapus</div>
-                            </button></td>
+                        <td>
+                            <button type="submit" name="" id=""
+                            class="align-items-center btn btn-danger px-3"><i
+                                class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                            <button type="submit" name="" id=""
+                            class="align-items-center btn btn-primary px-3"><i
+                                class="fa fa-edit" aria-hidden="true"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
 
