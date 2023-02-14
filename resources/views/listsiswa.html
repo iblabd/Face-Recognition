@@ -70,16 +70,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for i in result[0] %}
                     <tr>
-                        <td>2021118647</td>
-                        <td>Iqbal Abdurrahman</td>
-                        <td>XII RPL 1</td>
-                        <td>2021118647.siswa@gmail.com</td>
-                        <td><button type="submit" name="" id=""
+                        <td>{{ i["id"] }}</td>
+                        <td>{{ i["name"] }}</td>
+                        <td>{{ i["class_name"] }}</td>
+                        <td>{{ i["email"] }}</td>
+                        <td><form method="post" action="{{ url_for('deleteSiswa')}}">
+                            <input type="text" name="uid" id="" value="{{i['uid']}}" class="d-none">
+                            <button type="submit" name="" id="btnDelete"
                             class="d-flex align-items-center btn btn-danger ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2">
                             <div class="d-md-none d-lg-block ms-1">Hapus</div>
-                        </button></td>
+                        </button></form></td>
+                        
                     </tr>
+                    {% endfor %}
                 </tbody>
 
             </table>

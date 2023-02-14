@@ -52,9 +52,7 @@ class Firebase:
     
     def reference(self, ref):
         return db.reference(ref)
-    
-    def getref(self, ref):
-        return db.referece(ref).get()
+
     def push(self, contents):
         self.ref.push().set(contents)
             
@@ -120,7 +118,12 @@ class Firebase:
 
     
 # firebase = Firebase()
-# firebase.ref = firebase.reference("users")
-# firebase.update("users", {
-#     "password": firebase.hash("12345678")
-# })
+# firebase.ref = firebase.reference("students")
+# firebase.push({
+#                     "id": 1,
+#                     "name": "Luthfi Ganteng",
+#                     "email": "themightiestemail@gmail.com",
+#                     "class_id": 1,
+#                     "password": 12345678,
+#                     "telp": "+6287722582430"
+#                 })

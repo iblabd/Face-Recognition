@@ -7,7 +7,7 @@ from datetime import datetime
 import locale
 
 from Controllers.controller import Controller
-from Database.firebase import Record
+from Database.firebase import Record, Firebase
 
 import numpy as np, cv2, face_recognition, os, json, MySQLdb.cursors
 
@@ -15,6 +15,7 @@ app = Flask(__name__, template_folder='../resources/views', static_folder='../re
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 controller = Controller()
+
 
 @app.route('/', methods=["POST", "GET"])
 def dashboard():
@@ -112,14 +113,99 @@ def verif():
         return render_template('verification.html', id=session['id'])
     return redirect(url_for('login'))
 
-@app.route('/create-siswa')
-def createSiswa():
-    return render_template('add.html')
+@app.route('/add-siswa', methods=['GET', 'POST'])
+def addSiswa():
+    if request.method == 'POST':
+        nis = request.form['nis']
+        nama = request.form['name']
+        email = request.form['email']
+        kelas = request.form['kelas']
+        password = request.form['password']
+        telp = request.form['telp']
 
-@app.route('/list-siswa')
+        try:
+            controller.app.ref = controller.app.reference("students")
+            controller.app.push({
+                    "id": nis,
+                    "name": nama,
+                    "email": email,
+                    "class_id": kelas,
+                    "password": password,
+                    "telp": telp
+                })
+            print("Done")
+        except:
+            print("Unknown error")
+
+    kelas = controller.app.reference("class").get()
+    result = []
+
+    for key, val in kelas.items():
+        val["id_kelas"] = val["id"]
+        val["nama_kelas"] = val["name"]
+
+        res = {key: val}
+        res = Record(res)
+        
+        result.insert(0, res)
+
+    return render_template('add.html', kelas=result)
+
+@app.route('/list-siswa',  methods=['GET', 'POST'])
 def listSiswa():
-    return render_template('listsiswa.html')
     
+    def getStudentClass(on_id):
+            return controller.app.select_from("class", [
+                ["id", on_id]
+            ])[0].get("name")
+    
+    result = []
+    # if request.method == 'POST' and 'studentSearch' in request.form:
+    #     search_query  = request.form['studentSearch'].upper()
+            
+    #     if (search_query.isnumeric()):
+    #         snap = controller.app.select_from("students", [
+    #         ["student_id", int(search_query)]
+    #         ])
+    #     else:
+    #         search_query = getStudentByName(search_query).get("id")
+
+    #         snap = controller.app.select_from("students", [
+    #         ["student_id", int(search_query)]   
+    #         ])
+
+    #     for each in snap:
+    #         id = each.get("id")
+    #         student = getStudentsById(id)
+    #         try:
+    #             each.set("student_name", student.get("name"))
+    #             each.set("student_class", getStudentClass(student.get("class_id")))
+    #         except:
+    #             print("Nothing while searching by id.")
+                
+    #         result.insert(0, each)
+
+    # else:
+    snap = controller.app.reference("students").get()
+
+    for key, val in snap.items():
+        val["uid"] = key
+        val["student_name"] = val["name"]
+        val["student_class"] = getStudentClass(int(val["class_id"]))
+        # val["student_email"] = val["email"]
+        result.insert(0, val)
+    #     res = {key: val}
+    # result.insert(0, res)
+    return render_template('listsiswa.html', id=session['id'], result={0:result}, user=session['user'])
+
+@app.route('/delete-siswa', methods=['POST'])
+def deleteSiswa():
+    uid = request.form.get("uid")
+    try:
+        controller.app.reference(f"students/{uid}").delete()
+        return redirect("list-siswa")
+    except:
+        return "ERRRORRRRRRR"
 
 
 @app.route('/login', methods=['GET', 'POST'])

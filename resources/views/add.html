@@ -39,30 +39,29 @@
             <div class="row mb-4">
                 <h3>Tambah Siswa</h3>
             </div>
-            <form method="post" action="{{ url_for('dashboard') }}">
+            <form method="post" action="{{ url_for('addSiswa') }}">
                 <div class="row d-flex align-items-center mb-4">
                     <div class="mb-3 col-12"> <label for="nis" class="form-text">NIS</label>
-                        <input type="text" class="form-control" id="nis" placeholder="Contoh. 2021XXXXXX">
+                        <input type="text" class="form-control" name="nis" placeholder="Contoh. 2021XXXXXX">
                     </div>
                     <div class="mb-3 col-12"> <label for="name" class="form-text">Nama Siswa</label>
-                        <input type="text" class="form-control" id="name" placeholder="Contoh. John Doe">
+                        <input type="text" class="form-control" name="name" placeholder="Contoh. John Doe">
                     </div>
                     <div class="mb-3 col-12"> <label for="email" class="form-text">Email</label>
-                        <input type="text" class="form-control" id="email" placeholder="Contoh. johdoe@example.com">
+                        <input type="text" class="form-control" name="email" placeholder="Contoh. johdoe@example.com">
                     </div>
                     <div class="mb-3 col-12"> <label for="kelas" class="form-text">Kelas</label>
-                        <select class="form-select">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
+                        <select class="form-select" name="kelas">
+                            {% for i in kelas %}
+                            <option value="{{ i.get('id_kelas') }}">{{ i.get("nama_kelas") }}</option>
+                            {% endfor %}
                           </select>
                     </div>
                     <div class="mb-3 col-12"> <label for="password" class="form-text">Password</label>
-                        <input type="password" class="form-control" id="password">
+                        <input type="password" class="form-control" name="password">
                     </div>
                     <div class="mb-3 col-12"> <label for="telp" class="form-text">No. Telp</label>
-                        <input type="text" class="form-control" id="telp" placeholder="+628123123123">
+                        <input type="text" class="form-control" name="telp" placeholder="+628123123123">
                     </div>
                     
                     <button type="submit" name="" id=""
