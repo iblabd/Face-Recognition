@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Tambah Siswa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/custom.css')}}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/c47bf836a3.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <div class="d-flex justify-align-center my-2"> <img src="{{url_for('static', filename='images/logo.png')}}"
+                    width="64" height="64">
+                <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="{{url_for('dashboard')}}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('listSiswa')}}">Data Siswa <span class="sr-only">(current)</span> </a>
+              </li>
+            </ul>
+          </div>
+    </nav>
+    <main class="container-lg">
+        <div class="bg-white py-5 px-3 px-md-4 px-lg-5 px-xl-5" style="border-radius: 1.5rem;">
+            <div class="row mb-4">
+                <h3>Tambah Kelas</h3>
+            </div>
+            <form method="post" action="{{ url_for('addKelas') }}">
+                <div class="row d-flex align-items-center mb-4">
+                    <div class="mb-3 col-12"> <label for="kelas" class="form-text">Kelas</label>
+                        <select class="form-select">
+                            <option>X</option>
+                            <option>XI</option>
+                            <option>XII</option>
+                            <option>XII</option>
+                          </select>
+                    </div>
+                    <div class="mb-3 col-12"> <label for="jurusan" class="form-text">Jurusan</label>
+                        <select class="form-select">
+                            <option>Teknik Komputer Jaringan</option>
+                            <option>Rekayasa Perangkat Lunak</option>
+                            <option>Multimedia</option>
+                            <option>Teknik Instalasi Tenaga Listrik</option>
+                             <option>Teknik Otomasi Industri</option>
+                             <option>Audio Video</option>
+                          </select>
+                    </div>
+                    <div class="mb-3 col-12"> <label for="nama_kelas" class="form-text">Nama Kelas</label>
+                        <input type="text" class="form-control" id="nis" placeholder="Contoh: 12 TKJ / 10 PPLG 1 ">
+                    </div>
+                    <button type="submit" name="" id=""
+                            class="d-flex align-items-center btn btn-primary justify-content-center mt-4">
+                            Tambah Kelas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+</body>
+
+</html>

@@ -58,6 +58,7 @@
                     </a> </div>
                 </div>
             </form>
+        {% if result[0] %}
             <table
                 class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
                 <thead>
@@ -74,7 +75,7 @@
                     <tr>
                         <td>{{ i["id"] }}</td>
                         <td>{{ i["name"] }}</td>
-                        <td>{{ i["class_name"] }}</td>
+                        <td>{{ i["student_class"] }}</td>
                         <td>{{ i["email"] }}</td>
                         <td><form method="post" action="{{ url_for('deleteSiswa')}}">
                             <input type="text" name="uid" id="" value="{{i['uid']}}" class="d-none">
@@ -88,6 +89,20 @@
                 </tbody>
 
             </table>
+        {% else %}
+            <table
+                class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
+                <thead>
+                    <tr class="bg-light border-bottom border-light">
+                        <th scope="col">NIS</th>
+                        <th scope="col">Nama Siswa</th>
+                        <th scope="col">Kelas</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Hapus</th>
+                    </tr>
+                </thead>
+            </table>
+        {% endif %}
         </div>
     </main>
     <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>

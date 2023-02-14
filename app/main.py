@@ -184,19 +184,21 @@ def listSiswa():
     #             print("Nothing while searching by id.")
                 
     #         result.insert(0, each)
-
-    # else:
+   
+        
+    
+  
     snap = controller.app.reference("students").get()
-
+    
     for key, val in snap.items():
-        val["uid"] = key
-        val["student_name"] = val["name"]
-        val["student_class"] = getStudentClass(int(val["class_id"]))
-        # val["student_email"] = val["email"]
-        result.insert(0, val)
-    #     res = {key: val}
-    # result.insert(0, res)
+            val["uid"] = key
+            val["student_name"] = val["name"]
+            val["student_class"] = getStudentClass(int(val["class_id"]))
+            result.insert(0, val)
     return render_template('listsiswa.html', id=session['id'], result={0:result}, user=session['user'])
+
+@app.route('/add-kelas', methods=['POST'])
+
 
 @app.route('/delete-siswa', methods=['POST'])
 def deleteSiswa():
