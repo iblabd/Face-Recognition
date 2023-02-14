@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Daftar Siswa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/custom.css')}}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/c47bf836a3.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <div class="d-flex justify-align-center my-2"> <img src="{{url_for('static', filename='images/logo.png')}}"
+                    width="64" height="64">
+                <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
+            </div>
+        </div>
+    </nav>
+    <main class="container-lg">
+        <div class="bg-white py-5 px-3 px-md-4 px-lg-5 px-xl-5" style="border-radius: 1.5rem;">
+            <div class="row mb-4">
+                <h3>Daftar Siswa</h3>
+            </div>
+            <form method="post" action="{{ url_for('dashboard') }}">
+                <div class="row d-flex align-items-center mb-4">
+                    <div class="mb-3 col-md-4 col-lg-3"> <label for="studentSearch" class="form-text">Cari siswa</label>
+                        <input type="text" class="form-control" id="studentSearch" placeholder="Nama/NIS"
+                            name="studentSearch"> </div>
+                    <div
+                        class="col-12 col-md-2 col-lg-3 d-flex flex-row-reverse flex-md-row justify-content-start mt-md-1">
+                        <button type="submit" name="" id=""
+                            class="d-flex align-items-center btn btn-primary ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2"><i
+                                class="fa fa-search" aria-hidden="true"></i>
+                            <div class="d-md-none d-lg-block ms-1">Cari</div>
+                        </button> <a type="button" name="" id="" href="{{url_for('dashboard')}}"
+                            class="d-flex align-items-center btn btn-outline-primary"><i
+                                class="fa-solid fa-rotate-left"></i>
+                            <div class="d-md-none d-lg-block ms-1">Reset</div>
+                    </a> </div>
+                </div>
+            </form>
+            <table
+                class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
+                <thead>
+                    <tr class="bg-light border-bottom border-light">
+                        <th scope="col">NIS</th>
+                        <th scope="col">Nama Siswa</th>
+                        <th scope="col">Kelas</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Hapus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2021118647</td>
+                        <td>Iqbal Abdurrahman</td>
+                        <td>XII RPL 1</td>
+                        <td>2021118647.siswa@gmail.com</td>
+                        <td><button type="submit" name="" id=""
+                            class="d-flex align-items-center btn btn-danger ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2">
+                            <div class="d-md-none d-lg-block ms-1">Hapus</div>
+                        </button></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </main>
+    <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+</body>
+
+</html>

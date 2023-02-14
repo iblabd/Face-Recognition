@@ -112,6 +112,15 @@ def verif():
         return render_template('verification.html', id=session['id'])
     return redirect(url_for('login'))
 
+@app.route('/create-siswa')
+def createSiswa():
+    return render_template('add.html')
+
+@app.route('/list-siswa')
+def listSiswa():
+    return render_template('listsiswa.html')
+    
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
