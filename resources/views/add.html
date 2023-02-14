@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Tambah Siswa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/custom.css')}}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/c47bf836a3.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <div class="d-flex justify-align-center my-2"> <img src="{{url_for('static', filename='images/logo.png')}}"
+                    width="64" height="64">
+                <h3 class="text-white mt-3 mb-3 ms-2">Present Time!</h3>
+            </div>
+        </div>
+    </nav>
+    <main class="container-lg">
+        <div class="bg-white py-5 px-3 px-md-4 px-lg-5 px-xl-5" style="border-radius: 1.5rem;">
+            <div class="row mb-4">
+                <h3>Tambah Siswa</h3>
+            </div>
+            <form method="post" action="{{ url_for('dashboard') }}">
+                <div class="row d-flex align-items-center mb-4">
+                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">NIS</label>
+                        <input type="text" class="form-control" id="startFrom">
+                    </div>
+                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Nama Siswa</label>
+                        <input type="text" class="form-control" id="startFrom">
+                    </div>
+                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Email Siswa</label>
+                        <input type="text" class="form-control" id="startFrom">
+                    </div>
+                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Telepon Siswa</label>
+                        <input type="text" class="form-control" id="startFrom">
+                    </div>
+                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Password Siswa</label>
+                        <input type="text" class="form-control" id="startFrom">
+                    </div>
+                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Kelas</label>
+                        <select class="form-select">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                          </select>
+                    </div>
+                    
+                    <button type="submit" name="" id=""
+                            class="d-flex align-items-center btn btn-primary ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2">
+                            <div class="d-md-none d-lg-block ms-1">Tambah Siswa</div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+</body>
+
+</html>
