@@ -31,22 +31,16 @@
             </div>
             <form method="post" action="{{ url_for('dashboard') }}">
                 <div class="row d-flex align-items-center mb-4">
-                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">NIS</label>
-                        <input type="text" class="form-control" id="startFrom">
+                    <div class="mb-3 col-12"> <label for="nis" class="form-text">NIS</label>
+                        <input type="text" class="form-control" id="nis" placeholder="Contoh. 2021XXXXXX">
                     </div>
-                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Nama Siswa</label>
-                        <input type="text" class="form-control" id="startFrom">
+                    <div class="mb-3 col-12"> <label for="name" class="form-text">Nama Siswa</label>
+                        <input type="text" class="form-control" id="name" placeholder="Contoh. John Doe">
                     </div>
-                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Email Siswa</label>
-                        <input type="text" class="form-control" id="startFrom">
+                    <div class="mb-3 col-12"> <label for="email" class="form-text">Email</label>
+                        <input type="text" class="form-control" id="email" placeholder="Contoh. johdoe@example.com">
                     </div>
-                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Telepon Siswa</label>
-                        <input type="text" class="form-control" id="startFrom">
-                    </div>
-                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Password Siswa</label>
-                        <input type="text" class="form-control" id="startFrom">
-                    </div>
-                    <div class="mb-3 col-12"> <label for="startFrom" class="form-text">Kelas</label>
+                    <div class="mb-3 col-12"> <label for="kelas" class="form-text">Kelas</label>
                         <select class="form-select">
                             <option>1</option>
                             <option>2</option>
@@ -54,10 +48,16 @@
                             <option>4</option>
                           </select>
                     </div>
+                    <div class="mb-3 col-12"> <label for="password" class="form-text">Password</label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <div class="mb-3 col-12"> <label for="telp" class="form-text">No. Telp</label>
+                        <input type="text" class="form-control" id="telp" placeholder="+628123123123">
+                    </div>
                     
                     <button type="submit" name="" id=""
-                            class="d-flex align-items-center btn btn-primary ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2">
-                            <div class="d-md-none d-lg-block ms-1">Tambah Siswa</div>
+                            class="d-flex align-items-center btn btn-primary justify-content-center mt-4">
+                            Tambah Siswa
                     </button>
                 </div>
             </form>
