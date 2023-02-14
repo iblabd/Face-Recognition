@@ -53,6 +53,8 @@ class Firebase:
     def reference(self, ref):
         return db.reference(ref)
     
+    def getref(self, ref):
+        return db.referece(ref).get()
     def push(self, contents):
         self.ref.push().set(contents)
             
@@ -95,6 +97,27 @@ class Firebase:
     
     def hash(self, string):
         return sha256(string.encode('utf-8')).hexdigest()
+
+# def add(requests):
+#     id = requests.add['nis']
+#     name = requests.add['name']
+#     email = requests.add['email']
+#     password = "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f"
+#     kelas = requests.add['kelas']
+#     telp = request.add['telp']
+
+#     self.app.push({
+#         "class_id": kelas,
+#         "email": email,
+#         "id": id,
+#         "name": name,
+#         "password": password,
+#         "telp": telp,
+#     })
+    
+
+        
+
     
 # firebase = Firebase()
 # firebase.ref = firebase.reference("users")
