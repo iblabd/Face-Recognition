@@ -254,7 +254,87 @@ def deleteKelas():
     except:
         return "ERRRORRRRRRR"
 
+@app.route("/students/<uid>/edit", methods=["GET"])
+def editSiswa(uid):
+    def getStudentClass(on_id):
+            return controller.app.select_from("class", [
+                ["id", on_id]
+            ])[0].get("name")
+    
+    # if request.method == 'POST':
+    #     nis = request.form.get('nis')
+    #     nama = request.form.get('name')
+    #     email = request.form.get('email')
+    #     kelas = request.form.get('kelas')
+    #     password = request.form.get('password')
+    #     telp = request.form.get('telp')
 
+    #     try:
+    #         controller.app.ref = controller.app.reference("students")
+    #         controller.app.update({
+    #                 "id": nis,
+    #                 "name": nama,
+    #                 "email": email,
+    #                 "class_id": kelas,
+    #                 "password": password,
+    #                 "telp": telp
+    #             })
+    #         print("Done")
+    #     except:
+    #         print("Unknown error")
+
+    temp = controller.app.reference(f"students/{uid}").get()
+    kelas = controller.app.reference("class").get()
+    siswa = controller.app.reference("students").get()
+    result = []
+
+    for key, val in kelas.items():
+        val["id_kelas"] = val["id"]
+        val["nama_kelas"] = val["name"]
+
+        res = {key: val}
+        res = Record(res)
+        
+        result.insert(0, res)
+    # return temp
+    return render_template('editSiswa.html', kelas=result, siswa=temp, uid=uid)
+
+@app.route('/edit-siswa', methods=['POST'])
+def pushEditSiswa():
+    uid = request.form.get("uid")
+
+    nis = request.form.get('nis')
+    nama = request.form.get('name')
+    email = request.form.get('email')
+    kelas = request.form.get('kelas')
+    password = request.form.get('password')
+    telp = request.form.get('telp')
+
+    try:
+        controller.app.ref = controller.app.reference("students")
+        controller.app.update(uid, {
+                "id": nis,
+                "name": nama,
+                "email": email,
+                "class_id": kelas,
+                "password": password,
+                "telp": telp
+            })
+        return redirect(url_for('listSiswa'))
+    except:
+        return "ERORRRRRRzzz"
+
+
+    # for key, val in kelas.items():
+    #     val["id_kelas"] = val["id"]
+    #     val["nama_kelas"] = val["name"]
+
+    #     res = {key: val}
+    #     res = Record(res)
+        
+    #     result.insert(0, res)
+
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
