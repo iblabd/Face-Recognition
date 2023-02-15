@@ -55,7 +55,7 @@
                             class="d-flex align-items-center btn btn-primary ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2"><i
                                 class="fa fa-search" aria-hidden="true"></i>
                             <div class="d-md-none d-lg-block ms-1">Cari</div>
-                        </button> <a type="button" name="" id="" href="{{url_for('dashboard')}}"
+                        </button> <a type="button" name="" id="" href="{{url_for('listSiswa')}}"
                             class="d-flex align-items-center btn btn-outline-primary"><i
                                 class="fa-solid fa-rotate-left"></i>
                             <div class="d-md-none d-lg-block ms-1">Reset</div>
@@ -81,16 +81,17 @@
                         <td>{{ i["name"] }}</td>
                         <td>{{ i["student_class"] }}</td>
                         <td>{{ i["email"] }}</td>
-                        <td class="d-flex justify-content-center"><form method="post" action="{{ url_for('deleteSiswa')}}">
+                        <td class="d-flex justify-content-center">
+                            <button type="submit" name="" id=""
+                            class="align-items-center btn btn-primary px-3 me-2"><i
+                                class="fa fa-edit" aria-hidden="true"></i>
+                            </button>
+                            <form method="post" action="{{ url_for('deleteSiswa')}}">
                             <input type="text" name="uid" id="" value="{{i['uid']}}" class="d-none">
                             <button type="submit" name="" id=""
                             class="align-items-center btn btn-danger px-3"><i
                                 class="fa fa-trash" aria-hidden="true"></i>
                             </button></form>
-                            <button type="submit" name="" id=""
-                            class="align-items-center btn btn-primary px-3 ms-2"><i
-                                class="fa fa-edit" aria-hidden="true"></i>
-                            </button>
                         </td>
                     </tr>
                     {% endfor %}

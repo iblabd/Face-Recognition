@@ -86,7 +86,7 @@ def dashboard():
 @app.route('/index')
 def index():
     if "loggedin" in session:
-        return render_template('index.html', id=session['id'])
+        return render_template('recog/index.html', id=session['id'])
     
     return redirect(url_for('login'))
 
@@ -149,7 +149,7 @@ def addSiswa():
         
         result.insert(0, res)
 
-    return render_template('add.html', kelas=result)
+    return render_template('siswa/create_siswa.html', kelas=result)
 
 @app.route('/list-siswa',  methods=['GET', 'POST'])
 def listSiswa():
@@ -195,14 +195,14 @@ def listSiswa():
             val["student_name"] = val["name"]
             val["student_class"] = getStudentClass(int(val["class_id"]))
             result.insert(0, val)
-    return render_template('listsiswa.html', id=session['id'], result={0:result}, user=session['user'])
+    return render_template('siswa/list_siswa.html', id=session['id'], result={0:result}, user=session['user'])
 
 @app.route('/delete-siswa', methods=['POST'])
 def deleteSiswa():
     uid = request.form.get("uid")
     try:
         controller.app.reference(f"students/{uid}").delete()
-        return redirect("list-siswa")
+        return redirect("siswa/list_siswa.html")
     except:
         return "ERRRORRRRRRR"
 
@@ -231,7 +231,7 @@ def addKelas():
         except Exception:
             print("Error while storing to firebase.")
 
-    return render_template('crud_kelas.html')
+    return render_template('kelas/create_kelas.html')
 
 @app.route('/list-kelas', methods=['GET', 'POST'])
 def listKelas():
@@ -243,14 +243,14 @@ def listKelas():
             val["uid"] = key
             result.insert(0, val)
 
-    return render_template('listkelas.html', result={0:result})
+    return render_template('kelas/list_kelas.html', result={0:result})
 
 @app.route('/delete-kelas', methods=['POST'])
 def deleteKelas():
     uid = request.form.get("uid")
     try:
         controller.app.reference(f"class/{uid}").delete()
-        return redirect("list-kelas")
+        return redirect("kelas/list_kelas.html")
     except:
         return "ERRRORRRRRRR"
 
