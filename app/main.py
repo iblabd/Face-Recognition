@@ -197,9 +197,6 @@ def listSiswa():
             result.insert(0, val)
     return render_template('listsiswa.html', id=session['id'], result={0:result}, user=session['user'])
 
-@app.route('/add-kelas', methods=['POST'])
-
-
 @app.route('/delete-siswa', methods=['POST'])
 def deleteSiswa():
     uid = request.form.get("uid")
@@ -208,6 +205,55 @@ def deleteSiswa():
         return redirect("list-siswa")
     except:
         return "ERRRORRRRRRR"
+
+@app.route('/add-kelas', methods=['GET', 'POST'])
+def addKelas():
+    if request.method == 'POST':
+        nama = request.form['name']
+        grade = request.form['grade']
+        jurusan = request.form['jurusan']
+
+        class_array = []
+        snap = controller.app.reference("class").get()
+        for key, val in snap.items():
+            class_array.append(val)
+        id = len(class_array) + 1
+
+        try:
+            controller.app.ref = controller.app.reference("class")
+            controller.app.push({
+                    "id": id,
+                    "name": nama,
+                    "grade": int(grade),
+                    "field": jurusan
+                })
+            print("Done")
+        except Exception:
+            print("Error while storing to firebase.")
+
+    return render_template('crud_kelas.html')
+
+@app.route('/list-kelas', methods=['GET', 'POST'])
+def listKelas():
+    
+    result = []
+    snap = controller.app.reference("class").get()
+    
+    for key, val in snap.items():
+            val["uid"] = key
+            result.insert(0, val)
+
+    return render_template('listkelas.html', result={0:result})
+
+@app.route('/delete-kelas', methods=['POST'])
+def deleteKelas():
+    uid = request.form.get("uid")
+    try:
+        controller.app.reference(f"class/{uid}").delete()
+        return redirect("list-kelas")
+    except:
+        return "ERRRORRRRRRR"
+
 
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Daftar Siswa</title>
+    <title>Daftar Kelas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
@@ -28,10 +28,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('dashboard')}}">Home</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{url_for('listSiswa')}}">Data Siswa</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="{{url_for('listKelas')}}">Data Kelas</a>
                     </li>
                 </ul>
@@ -39,14 +39,14 @@
         </div>
     </nav>
     <main class="container-lg">
-        <div class="d-flex justify-content-end mb-4"> <a href="{{url_for('addSiswa')}}" class="btn btn-primary">Tambah Siswa</a> </div>
+        <div class="d-flex justify-content-end mb-4"> <a href="{{url_for('addKelas')}}" class="btn btn-primary">Tambah Kelas</a> </div>
         <div class="bg-white py-5 px-3 px-md-4 px-lg-5 px-xl-5" style="border-radius: 1.5rem;">
             <div class="row mb-4">
-                <h3>Daftar Siswa</h3>
+                <h3>Daftar Kelas</h3>
             </div>
             <form method="post" action="{{ url_for('dashboard') }}">
                 <div class="row d-flex align-items-center mb-4">
-                    <div class="mb-3 col-md-4 col-lg-3"> <label for="studentSearch" class="form-text">Cari siswa</label>
+                    <div class="mb-3 col-md-4 col-lg-3"> <label for="studentSearch" class="form-text">Cari Kelas</label>
                         <input type="text" class="form-control" id="studentSearch" placeholder="Nama/NIS"
                             name="studentSearch"> </div>
                     <div
@@ -67,21 +67,19 @@
                 class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
                 <thead>
                     <tr class="bg-light border-bottom border-light">
-                        <th scope="col">NIS</th>
-                        <th scope="col">Nama Siswa</th>
-                        <th scope="col">Kelas</th>
-                        <th scope="col">Email</th>
+                        <th scope="col">Nama Kelas</th>
+                        <th scope="col">Tingkat</th>
+                        <th scope="col">Jurusan</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for i in result[0] %}
                     <tr>
-                        <td>{{ i["id"] }}</td>
                         <td>{{ i["name"] }}</td>
-                        <td>{{ i["student_class"] }}</td>
-                        <td>{{ i["email"] }}</td>
-                        <td class="d-flex justify-content-center"><form method="post" action="{{ url_for('deleteSiswa')}}">
+                        <td>{{ i["grade"] }}</td>
+                        <td>{{ i["field"] }}</td>
+                        <td class="d-flex justify-content-center"><form method="post" action="{{ url_for('deleteKelas')}}">
                             <input type="text" name="uid" id="" value="{{i['uid']}}" class="d-none">
                             <button type="submit" name="" id=""
                             class="align-items-center btn btn-danger px-3"><i
