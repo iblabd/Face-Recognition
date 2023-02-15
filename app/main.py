@@ -202,7 +202,7 @@ def deleteSiswa():
     uid = request.form.get("uid")
     try:
         controller.app.reference(f"students/{uid}").delete()
-        return redirect("siswa/list_siswa.html")
+        return redirect("list-siswa")
     except:
         return "ERRRORRRRRRR"
 
@@ -250,7 +250,7 @@ def deleteKelas():
     uid = request.form.get("uid")
     try:
         controller.app.reference(f"class/{uid}").delete()
-        return redirect("kelas/list_kelas.html")
+        return redirect("list-kelas")
     except:
         return "ERRRORRRRRRR"
 
