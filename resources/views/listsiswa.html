@@ -68,7 +68,7 @@
                         <th scope="col">Nama Siswa</th>
                         <th scope="col">Kelas</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Hapus</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,13 +78,17 @@
                         <td>{{ i["name"] }}</td>
                         <td>{{ i["student_class"] }}</td>
                         <td>{{ i["email"] }}</td>
-                        <td><form method="post" action="{{ url_for('deleteSiswa')}}">
+                        <td class="d-flex justify-content-center"><form method="post" action="{{ url_for('deleteSiswa')}}">
                             <input type="text" name="uid" id="" value="{{i['uid']}}" class="d-none">
-                            <button type="submit" name="" id="btnDelete"
-                            class="d-flex align-items-center btn btn-danger ms-2 me-0 ms-md-0 me-md-2 ms-lg-0 me-lg-2 ms-xl-0 me-xl-2">
-                            <div class="d-md-none d-lg-block ms-1">Hapus</div>
-                        </button></form></td>
-                        
+                            <button type="submit" name="" id=""
+                            class="align-items-center btn btn-danger px-3"><i
+                                class="fa fa-trash" aria-hidden="true"></i>
+                            </button></form>
+                            <button type="submit" name="" id=""
+                            class="align-items-center btn btn-primary px-3 ms-2"><i
+                                class="fa fa-edit" aria-hidden="true"></i>
+                            </button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
