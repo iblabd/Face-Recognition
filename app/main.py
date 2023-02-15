@@ -260,7 +260,35 @@ def deleteKelas():
         controller.app.reference(f"class/{uid}").delete()
         return redirect("list-kelas")
     except:
-        return "ERRRORRRRRRR"
+        return "Error"
+
+@app.route("/class/<uid>/edit", methods=["GET"])
+def editKelas(uid):
+
+    temp = controller.app.reference(f"class/{uid}").get()
+
+    return render_template('kelas/edit_kelas.html', kelas=temp, uid=uid)
+
+@app.route('/edit-kelas', methods=['POST'])
+def pushEditKelas():
+    uid = request.form.get("uid")
+
+    id = request.form['id']
+    nama = request.form['name']
+    grade = request.form['grade']
+    jurusan = request.form['jurusan']
+
+    try:
+        controller.app.ref = controller.app.reference("class")
+        controller.app.update(uid, {
+                "id": id,
+                "name": nama,
+                "grade": int(grade),
+                "field": jurusan
+            })
+        return redirect(url_for('listKelas'))
+    except Exception:
+        return uid
 
 @app.route("/students/<uid>/edit", methods=["GET"])
 def editSiswa(uid):

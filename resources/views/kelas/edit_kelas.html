@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Tambah Kelas</title>
+    <title>Edit Data Kelas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
@@ -44,34 +44,36 @@
     <main class="container-lg">
         <div class="bg-white py-5 px-3 px-md-4 px-lg-5 px-xl-5" style="border-radius: 1.5rem;">
             <div class="row mb-4">
-                <h3>Tambah Kelas</h3>
+                <h3>Edit Data Kelas</h3>
             </div>
-            <form method="POST" action="{{ url_for('addKelas') }}">
+            <form method="POST" action="{{ url_for('pushEditKelas') }}">
                 <div class="row d-flex align-items-center mb-4">
+                    <input type="text" value="{{uid}}" class="d-none" name="uid">
+                    <input type="text" value="{{kelas['id']}}" class="d-none" name="id">
                     <div class="mb-3 col-12"> <label for="kelas" class="form-text">Kelas</label>
                         <select class="form-select" name="grade">
-                            <option value="10">X</option>
-                            <option value="11">XI</option>
-                            <option value="12">XII</option>
-                            <option value="13">XIII</option>
+                            <option value="10" {% if kelas['grade'] == 10 %}selected{% endif %}>X</option>
+                            <option value="11" {% if kelas['grade'] == 11 %}selected{% endif %}>XI</option>
+                            <option value="12" {% if kelas['grade'] == 12 %}selected{% endif %}>XII</option>
+                            <option value="13" {% if kelas['grade'] == 13 %}selected{% endif %}>XIII</option>
                           </select>
                     </div>
                     <div class="mb-3 col-12"> <label for="jurusan" class="form-text">Jurusan</label>
                         <select class="form-select" name="jurusan">
-                            <option value="Teknik Komputer Jaringan">Teknik Komputer Jaringan</option>
-                            <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
-                            <option value="Multimedia">Multimedia</option>
-                            <option value="Teknik Instalasi Tenaga Listrik">Teknik Instalasi Tenaga Listrik</option>
-                            <option value="Teknik Otomasi Industri">Teknik Otomasi Industri</option>
-                            <option value="Teknik Audio Video">Teknik Audio Video</option>
+                            <option value="Teknik Komputer Jaringan" {% if kelas['field'] == 'Teknik Komputer Jaringan' %}selected{% endif %}>Teknik Komputer Jaringan</option>
+                            <option value="Rekayasa Perangkat Lunak" {% if kelas['field'] == 'Rekayasa Perangkat Lunak' %}selected{% endif %}>Rekayasa Perangkat Lunak</option>
+                            <option value="Multimedia" {% if kelas['field'] == 'Multimedia' %}selected{% endif %}>Multimedia</option>
+                            <option value="Teknik Instalasi Tenaga Listrik" {% if kelas['field'] == 'Teknik Instalasi Tenaga Listrik' %}selected{% endif %}>Teknik Instalasi Tenaga Listrik</option>
+                            <option value="Teknik Otomasi Industri" {% if kelas['field'] == 'Teknik Otomasi Industri' %}selected{% endif %}>Teknik Otomasi Industri</option>
+                            <option value="Teknik Audio Video" {% if kelas['field'] == 'Teknik Audio Video' %}selected{% endif %}>Teknik Audio Video</option>
                           </select>
                     </div>
                     <div class="mb-3 col-12"> <label for="nama_kelas" class="form-text">Nama Kelas</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Contoh: XII RPL 1">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Contoh: XII RPL 1" value="{{ kelas['name']}}">
                     </div>
                     <button type="submit" name="" id=""
                             class="d-flex align-items-center btn btn-primary justify-content-center mt-4">
-                            Tambah Kelas
+                            Edit Data Kelas
                     </button>
                 </div>
             </form>
