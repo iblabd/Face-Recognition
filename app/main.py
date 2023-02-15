@@ -305,7 +305,7 @@ def editSiswa(uid):
         
         result.insert(0, res)
     # return temp
-    return render_template('editSiswa.html', kelas=result, siswa=temp, uid=uid)
+    return render_template('siswa/edit_siswa.html', kelas=result, siswa=temp, uid=uid)
 
 @app.route('/edit-siswa', methods=['POST'])
 def pushEditSiswa():
