@@ -36,6 +36,7 @@ def dashboard():
             ])[0].get("name")
 
         result = []
+        result_total = 0
         if request.method == 'POST' and 'studentSearch' in request.form:
             search_query  = request.form['studentSearch'].upper()
             
@@ -61,6 +62,8 @@ def dashboard():
                 
                 result.insert(0, each)
 
+            result_total = len(result)
+
         else:
             snap = controller.app.reference("gate_presence").get()
 
@@ -71,13 +74,14 @@ def dashboard():
                 res = {key: val}
                 res = Record(res)
                 result.insert(0, res)
-        
+            
+            result_total = len(result)
         
         locale.setlocale(locale.LC_TIME, "id_ID")
         datenow = datetime.now()
         date = datenow.strftime("%d %B %Y")
         
-        return render_template('dashboard.html', id=session['id'], result=result, user=session['user'], date=date)
+        return render_template('dashboard.html', id=session['id'], result=result, user=session['user'], date=date, result_total=result_total)
     return redirect(url_for('login'))
 
 
@@ -160,6 +164,7 @@ def listSiswa():
             ])[0].get("name")
     
     result = []
+    result_total = 0
     # if request.method == 'POST' and 'studentSearch' in request.form:
     #     search_query  = request.form['studentSearch'].upper()
             
@@ -195,7 +200,10 @@ def listSiswa():
             val["student_name"] = val["name"]
             val["student_class"] = getStudentClass(int(val["class_id"]))
             result.insert(0, val)
-    return render_template('siswa/list_siswa.html', id=session['id'], result={0:result}, user=session['user'])
+
+    result_total = len(result)
+
+    return render_template('siswa/list_siswa.html', id=session['id'], result={0:result}, result_total=result_total, user=session['user'])
 
 @app.route('/delete-siswa', methods=['POST'])
 def deleteSiswa():
@@ -238,12 +246,16 @@ def listKelas():
     
     result = []
     snap = controller.app.reference("class").get()
+
+    result_total = 0
     
     for key, val in snap.items():
             val["uid"] = key
             result.insert(0, val)
+    
+    result_total = len(result)
 
-    return render_template('kelas/list_kelas.html', result={0:result})
+    return render_template('kelas/list_kelas.html', result={0:result}, result_total=result_total)
 
 @app.route('/delete-kelas', methods=['POST'])
 def deleteKelas():
