@@ -46,7 +46,7 @@
             </div>
             <form method="post" action="{{ url_for('dashboard') }}">
                 <div class="row d-flex align-items-center mb-4">
-                    <div class="mb-3 col-md-4 col-lg-3"> <label for="studentSearch" class="form-text">Cari Kelas</label>
+                    <div class="mb-3 col-md-4 col-lg-3"> <label for="studentSearch" class="form-text">Cari kelas</label>
                         <input type="text" class="form-control" id="studentSearch" placeholder="Nama Kelas/Jurusan"
                             name="studentSearch"> </div>
                     <div
@@ -67,7 +67,7 @@
                 class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
                 <thead>
                     <tr class="bg-light border-bottom border-light">
-                        <th scope="col">Nama Kelas</th>
+                        <th scope="col">Kelas</th>
                         <th scope="col">Tingkat</th>
                         <th scope="col">Jurusan</th>
                         <th scope="col"></th>
@@ -94,20 +94,22 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-
             </table>
         {% else %}
             <table
                 class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
                 <thead>
                     <tr class="bg-light border-bottom border-light">
-                        <th scope="col">NIS</th>
-                        <th scope="col">Nama Siswa</th>
                         <th scope="col">Kelas</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Hapus</th>
+                        <th scope="col">Tingkat</th>
+                        <th scope="col">Jurusan</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" align="center">Tidak ada data kelas.</td>
+                </tbody>
             </table>
         {% endif %}
         </div>

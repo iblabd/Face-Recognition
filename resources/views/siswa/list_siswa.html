@@ -68,9 +68,10 @@
                 <thead>
                     <tr class="bg-light border-bottom border-light">
                         <th scope="col">NIS</th>
-                        <th scope="col">Nama Siswa</th>
+                        <th scope="col">Nama</th>
                         <th scope="col">Kelas</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Telepon</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -81,6 +82,7 @@
                         <td>{{ i["name"] }}</td>
                         <td>{{ i["student_class"] }}</td>
                         <td>{{ i["email"] }}</td>
+                        <td>{{ i["telp"] }}</td>
                         <td class="d-flex justify-content-center">
                             <button type="submit" name="" id=""
                             class="align-items-center btn btn-primary px-3 me-2"><i
@@ -96,7 +98,6 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-
             </table>
         {% else %}
             <table
@@ -104,12 +105,18 @@
                 <thead>
                     <tr class="bg-light border-bottom border-light">
                         <th scope="col">NIS</th>
-                        <th scope="col">Nama Siswa</th>
+                        <th scope="col">Nama</th>
                         <th scope="col">Kelas</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Hapus</th>
+                        <th scope="col">Telepon</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" align="center">Tidak ada data siswa.</td>
+                    </tr>
+                </tbody>
             </table>
         {% endif %}
         </div>

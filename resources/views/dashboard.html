@@ -84,6 +84,7 @@
                     </a> </div>
                 </div>
             </form>
+            {% if result %}
             <table
                 class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
                 <thead>
@@ -112,8 +113,26 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-
             </table>
+            {% else %}
+            <table
+                class="table px-0 px-sm-1 px-md-4 px-lg-4 px-xl-4 px-sm-1 border border-light col-12 mt-sm-2 mb-4 table-responsive-xs table-responsive-sm">
+                <thead>
+                    <tr class="bg-light border-bottom border-light">
+                        <th scope="col">NIS</th>
+                        <th scope="col">Nama Siswa</th>
+                        <th scope="col">Kelas</th>
+                        <th scope="col">Tanggal & Waktu</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" align="center">Tidak ada riwayat presensi.</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
             <!-- <div class="row">
                 <div class="col-8 d-flex d-inline-flex justify-content-end">
                     <p class="col-7 col-sm-5 col-md-6 d-flex justify-content-end pe-0">Rows <div
