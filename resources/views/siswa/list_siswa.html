@@ -88,14 +88,37 @@
                             class="align-items-center btn btn-primary px-3 me-2"><i
                                 class="fa fa-edit" aria-hidden="true"></i>
                             </button>
-                            <form method="post" action="{{ url_for('deleteSiswa')}}">
-                            <input type="text" name="uid" id="" value="{{i['uid']}}" class="d-none">
                             <button type="submit" name="" id=""
-                            class="align-items-center btn btn-danger px-3"><i
-                                class="fa fa-trash" aria-hidden="true"></i>
-                            </button></form>
+                            class="align-items-center btn btn-danger px-3" data-bs-toggle="modal" data-bs-target="#customModal-{{ i["id"] }}"><i
+                            class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
                         </td>
                     </tr>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="customModal-{{ i["id"] }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Hapus siswa ini?</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p>Apa kamu yakin akan menghapus siswa ini?</p></p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Batal</button>
+                                    <form method="post" action="{{ url_for('deleteSiswa')}}">
+                                        <input type="text" name="uid" id="" value="{{i['uid']}}" class="d-none">
+                                        <button type="submit" name="" id=""
+                                        class="align-items-center btn btn-danger px-3">Hapus
+                                    </button></form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
                 </tbody>
             </table>
@@ -121,7 +144,30 @@
         {% endif %}
         </div>
     </main>
+
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
     <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+    
 </body>
 
 </html>
