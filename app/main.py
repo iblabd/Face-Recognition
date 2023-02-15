@@ -61,8 +61,7 @@ def dashboard():
                     print("Nothing while searching by id.")
                 
                 result.insert(0, each)
-
-            result_total = len(result)
+                result_total = len(result)
 
         else:
             snap = controller.app.reference("gate_presence").get()
@@ -74,8 +73,7 @@ def dashboard():
                 res = {key: val}
                 res = Record(res)
                 result.insert(0, res)
-            
-            result_total = len(result)
+                result_total = len(result)
         
         locale.setlocale(locale.LC_TIME, "id_ID")
         datenow = datetime.now()
@@ -200,8 +198,7 @@ def listSiswa():
             val["student_name"] = val["name"]
             val["student_class"] = getStudentClass(int(val["class_id"]))
             result.insert(0, val)
-
-    result_total = len(result)
+            result_total = len(result)
 
     return render_template('siswa/list_siswa.html', id=session['id'], result={0:result}, result_total=result_total, user=session['user'])
 
@@ -252,8 +249,7 @@ def listKelas():
     for key, val in snap.items():
             val["uid"] = key
             result.insert(0, val)
-    
-    result_total = len(result)
+            result_total = len(result)
 
     return render_template('kelas/list_kelas.html', result={0:result}, result_total=result_total)
 
