@@ -126,7 +126,7 @@ def addSiswa():
         telp = request.form['telp']
 
         try:
-            controller.app.ref = controller.app.reference("students")
+            controller.app.ref = controller.app.reference("users")
             controller.app.push({
                     "id": nis,
                     "name": nama,
@@ -167,13 +167,13 @@ def listSiswa():
     #     search_query  = request.form['studentSearch'].upper()
             
     #     if (search_query.isnumeric()):
-    #         snap = controller.app.select_from("students", [
+    #         snap = controller.app.select_from("users", [
     #         ["student_id", int(search_query)]
     #         ])
     #     else:
     #         search_query = getStudentByName(search_query).get("id")
 
-    #         snap = controller.app.select_from("students", [
+    #         snap = controller.app.select_from("users", [
     #         ["student_id", int(search_query)]   
     #         ])
 
@@ -191,7 +191,7 @@ def listSiswa():
         
     
   
-    snap = controller.app.reference("students").get()
+    snap = controller.app.reference("users").get()
     
     for key, val in snap.items():
             val["uid"] = key
@@ -206,7 +206,7 @@ def listSiswa():
 def deleteSiswa():
     uid = request.form.get("uid")
     try:
-        controller.app.reference(f"students/{uid}").delete()
+        controller.app.reference(f"users/{uid}").delete()
         return redirect("list-siswa")
     except:
         return "ERRRORRRRRRR"
@@ -306,7 +306,7 @@ def editSiswa(uid):
     #     telp = request.form.get('telp')
 
     #     try:
-    #         controller.app.ref = controller.app.reference("students")
+    #         controller.app.ref = controller.app.reference("users")
     #         controller.app.update({
     #                 "id": nis,
     #                 "name": nama,
@@ -319,9 +319,9 @@ def editSiswa(uid):
     #     except:
     #         print("Unknown error")
 
-    temp = controller.app.reference(f"students/{uid}").get()
+    temp = controller.app.reference(f"users/{uid}").get()
     kelas = controller.app.reference("class").get()
-    siswa = controller.app.reference("students").get()
+    siswa = controller.app.reference("users").get()
     result = []
 
     for key, val in kelas.items():
@@ -347,7 +347,7 @@ def pushEditSiswa():
     telp = request.form.get('telp')
 
     try:
-        controller.app.ref = controller.app.reference("students")
+        controller.app.ref = controller.app.reference("users")
         controller.app.update(uid, {
                 "id": nis,
                 "name": nama,
